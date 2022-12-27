@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged --allow-empty"
   },
   "dependencies": {
     "@next/font": "13.1.1",
@@ -22,10 +23,20 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "^1.12.1",
+    "swr": "^2.0.0",
     "typescript": "4.9.4"
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.2",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.1",
     "prisma": "^4.8.0"
+  },
+  "lint-staged": {
+    "**/*.(ts|tsx)": [
+      "prettier --write --ignore-unknown",
+      "eslint --fix"
+    ]
   }
 }

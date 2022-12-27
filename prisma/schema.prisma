@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -30,6 +31,7 @@ model cars {
   @@index([customized], map: "CustomizedIndex")
   @@index([maker], map: "MakerIndex")
   @@index([restored], map: "RestoredIndex")
+  @@fulltext([brand, maker, model, color])
 }
 
 model comments {
