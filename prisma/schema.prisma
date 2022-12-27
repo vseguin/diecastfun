@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model brands {
+  name    String  @id @db.VarChar(100)
+  country String? @db.VarChar(100)
+}
+
+model cars {
+  id             String    @id @db.VarChar(255)
+  brand          String?   @db.VarChar(255)
+  color          String?   @db.VarChar(255)
+  count          Int
+  customized     Boolean?  @db.Bit(1)
+  era            String?   @db.VarChar(255)
+  insertion_date DateTime? @db.Date
+  maker          String?   @db.VarChar(255)
+  model          String?   @db.VarChar(255)
+  restored       Boolean?  @db.Bit(1)
+  scale          String?   @db.VarChar(255)
+  tags           tags[]    @ignore
+
+  @@index([brand], map: "BrandIndex")
+  @@index([customized], map: "CustomizedIndex")
+  @@index([maker], map: "MakerIndex")
+  @@index([restored], map: "RestoredIndex")
+}
+
+model comments {
+  id       BigInt  @id @default(autoincrement())
+  message  String? @db.VarChar(255)
+  username String? @db.VarChar(255)
+}
+
+model config {
+  key   String  @id @db.VarChar(100)
+  value String? @db.VarChar(1000)
+}
+
+model makers {
+  name String @id @db.VarChar(100)
+}
+
+model queued_cars {
+  id             String        @id @db.VarChar(255)
+  brand          String?       @db.VarChar(255)
+  color          String?       @db.VarChar(255)
+  count          Int
+  customized     Boolean?      @db.Bit(1)
+  era            String?       @db.VarChar(255)
+  insertion_date DateTime?     @db.Date
+  maker          String?       @db.VarChar(255)
+  model          String?       @db.VarChar(255)
+  restored       Boolean?      @db.Bit(1)
+  scale          String?       @db.VarChar(255)
+  queued_tags    queued_tags[] @ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model queued_tags {
+  id          String      @db.VarChar(255)
+  tags        String      @db.VarChar(255)
+  queued_cars queued_cars @relation(fields: [id], references: [id], onUpdate: Restrict, map: "FK5q1dntrn8nsbdlf86t2eg0i32")
+
+  @@index([id], map: "FK5q1dntrn8nsbdlf86t2eg0i32")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model tags {
+  id   String @db.VarChar(255)
+  tags String @db.VarChar(255)
+  cars cars   @relation(fields: [id], references: [id], onUpdate: Restrict, map: "FK_7rl33od3pg8xd0fbmxq0fotsy")
+
+  @@index([id], map: "FKt4n1dd2ftua53wow42sybac0r")
+  @@index([tags], map: "TagsIndex")
+  @@ignore
+}
+
+model views {
+  number Int
+  car_id String @id @default("") @db.VarChar(255)
+}
+
+model votes {
+  id     String @id @db.VarChar(100)
+  number BigInt
+}
+
+model wanted_cars {
+  id    String  @id @db.VarChar(255)
+  brand String? @db.VarChar(255)
+  maker String? @db.VarChar(255)
+  model String? @db.VarChar(255)
+}
