@@ -2,6 +2,7 @@ import { brands } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../lib/prisma";
 import Joi from "joi";
+import authenticate from "../../../lib/middlewares/authentication";
 import validate from "../../../lib/middlewares/validation";
 
 type Response = brands;
@@ -26,4 +27,4 @@ const handler = async function (
   }
 };
 
-export default validate({ body: schema }, handler);
+export default authenticate(validate({ body: schema }, handler));

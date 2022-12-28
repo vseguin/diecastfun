@@ -60,6 +60,29 @@ const handler = async function (
       };
     });
 
+    const brand = await prisma.brands.findUnique({
+      where: {
+        name: req.body.brand,
+      },
+    });
+    if (!brand) {
+      res.status(400).end();
+      return;
+    }
+
+    const maker = await prisma.makers.findUnique({
+      where: {
+        name: req.body.maker,
+      },
+    });
+    if (!maker) {
+      await prisma.makers.create({
+        data: {
+          name: req.body.maker,
+        },
+      });
+    }
+
     const car = await prisma.cars.create({
       include: {
         tags: true,
