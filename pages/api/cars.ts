@@ -52,7 +52,7 @@ export default async function handler(
   }
 
   if (req.query.q) {
-    const words = req.query.qreq.query.q.split(" ");
+    const words = req.query.q.split(" ");
     const wordQueries = [];
     words.forEach((w) => {
       const queries = [
