@@ -25,29 +25,39 @@ export default async function handler(
   }
 
   if (req.query.q) {
-    queries.push({
-      OR: [
+    const words = req.query.q.split(" ");
+    const wordQueries = [];
+    words.forEach((w) => {
+      const queries = [
         {
           model: {
-            contains: req.query.q,
+            contains: w,
           },
         },
         {
           brand: {
-            contains: req.query.q,
+            contains: w,
           },
         },
         {
           maker: {
-            contains: req.query.q,
+            contains: w,
           },
         },
         {
           color: {
-            contains: req.query.q,
+            contains: w,
           },
         },
-      ],
+      ];
+
+      wordQueries.push({
+        OR: queries,
+      });
+    });
+    console.log(words);
+    queries.push({
+      AND: wordQueries,
     });
   }
 
