@@ -60,7 +60,7 @@ export default async function handler(
     queries.push({
       tags: {
         some: {
-          tags: req.query.category,
+          tags: req.query.category as string,
         },
       },
     });
