@@ -9,11 +9,20 @@ type Brand = Prisma.brandsGetPayload<{}> & {
 
 type Props = {
   brands: Brand[];
+  countries: String[];
 };
 
-export default function BrandsIndex({ brands }: Props) {
+export default function BrandsIndex({ brands, countries }: Props) {
   return (
     <div>
+      {countries.map((country) => {
+        return (
+          <div key={country}>
+            <Link href={`/brands?country=${country}`}>{country}</Link>
+          </div>
+        );
+      })}
+
       {brands.map((brand) => {
         return (
           <div key={brand.name}>
@@ -27,14 +36,36 @@ export default function BrandsIndex({ brands }: Props) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
+  const whereClause = query.country
+    ? {
+        country: {
+          equals: query.country,
+        },
+      }
+    : {};
+
   const brands = await prisma.brands.findMany({
+    where: whereClause,
     orderBy: [
       {
         name: "asc",
       },
     ],
   });
+
+  let countries = await prisma.brands.findMany({
+    distinct: ["country"],
+    select: {
+      country: true,
+    },
+    orderBy: [
+      {
+        country: "asc",
+      },
+    ],
+  });
+  countries = countries.map((c) => c.country);
 
   const cars = await getGroupedByCars(prisma, "brand");
 
@@ -43,6 +74,6 @@ export async function getServerSideProps() {
   });
 
   return {
-    props: { brands: result },
+    props: { brands: result, countries },
   };
 }

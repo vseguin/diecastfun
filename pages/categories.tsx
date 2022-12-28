@@ -1,7 +1,5 @@
 import prisma from "../lib/prisma";
-import { Prisma } from "@prisma/client";
 import Link from "next/link";
-import { getGroupedByCars } from "../utils/api";
 
 type Category = {
   name: String;
@@ -32,6 +30,9 @@ export default function CategoriesIndex({ categories }: Props) {
 export async function getServerSideProps() {
   const categories = await prisma.tags.findMany({
     distinct: ["tags"],
+    select: {
+      tags: true,
+    },
     orderBy: [
       {
         tags: "asc",
@@ -46,8 +47,6 @@ export async function getServerSideProps() {
     },
   });
   tags = Object.assign({}, ...tags.map((t) => ({ [t.tags]: t._count._all })));
-
-  console.log(categories);
 
   const result = categories.map((c) => {
     return { name: c.tags, count: tags[c.tags] };

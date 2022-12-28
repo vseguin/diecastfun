@@ -28,14 +28,6 @@ export default function ErasIndex({ eras }: Props) {
 }
 
 export async function getServerSideProps() {
-  /*
-  const eras = await prisma.cars.findMany({
-    distinct: ['era'],
-    select: {
-      'era': true
-    }
-  });*/
-
   const eras = [
     "OldTimers",
     "Forties",

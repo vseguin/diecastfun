@@ -81,7 +81,6 @@ export default async function handler(
         OR: queries,
       });
     });
-    console.log(words);
     queries.push({
       AND: wordQueries,
     });
