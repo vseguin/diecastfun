@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { cars } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
@@ -20,7 +19,23 @@ export default async function handler(
   if (req.query.brand) {
     queries.push({
       brand: {
-        equals: req.query.brand,
+        equals: req.query.brand as string,
+      },
+    });
+  }
+
+  if (req.query.customized) {
+    queries.push({
+      customized: {
+        equals: true,
+      },
+    });
+  }
+
+  if (req.query.restored) {
+    queries.push({
+      restored: {
+        equals: true,
       },
     });
   }
@@ -28,7 +43,7 @@ export default async function handler(
   if (req.query.maker) {
     queries.push({
       maker: {
-        equals: req.query.maker,
+        equals: req.query.maker as string,
       },
     });
   }
@@ -36,7 +51,7 @@ export default async function handler(
   if (req.query.era) {
     queries.push({
       era: {
-        equals: req.query.era,
+        equals: req.query.era as string,
       },
     });
   }
@@ -52,8 +67,35 @@ export default async function handler(
   }
 
   if (req.query.q) {
-    const words = req.query.q.split(" ");
-    const wordQueries = [];
+    const words = (req.query.q as string).split(" ");
+    const wordQueries: {
+      OR: (
+        | {
+            model: { contains: any };
+            brand?: undefined;
+            maker?: undefined;
+            color?: undefined;
+          }
+        | {
+            brand: { contains: any };
+            model?: undefined;
+            maker?: undefined;
+            color?: undefined;
+          }
+        | {
+            maker: { contains: any };
+            model?: undefined;
+            brand?: undefined;
+            color?: undefined;
+          }
+        | {
+            color: { contains: any };
+            model?: undefined;
+            brand?: undefined;
+            maker?: undefined;
+          }
+      )[];
+    }[] = [];
     words.forEach((w) => {
       const queries = [
         {
