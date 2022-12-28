@@ -4,6 +4,8 @@ import prisma from "../../lib/prisma";
 
 type Response = {
   items: cars[];
+  page: Number;
+  per: Number;
   total: Number;
 };
 
@@ -145,5 +147,5 @@ export default async function handler(
     where: query,
   });
 
-  res.status(200).json({ items: cars, total: count });
+  res.status(200).json({ items: cars, per, page, total: count });
 }

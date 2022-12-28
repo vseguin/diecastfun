@@ -1,12 +1,14 @@
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../utils/api";
 
 type Car = Prisma.carsGetPayload<{}>;
 
 export default function CarsIndex() {
+  const [cars, setCars] = useState([]);
   const router = useRouter();
   const searchParams = new URLSearchParams();
 
@@ -18,14 +20,15 @@ export default function CarsIndex() {
 
   const path = `/api/cars?${searchParams.toString()}`;
 
-  const { data } = useSWR(path, fetcher);
-  if (!data) {
-    return <h1>Loading...</h1>;
-  }
+  useSWR(path, fetcher, {
+    onSuccess: (data) => {
+      setCars(data.items);
+    },
+  });
 
   return (
     <div>
-      {data.items.map((car: Car) => {
+      {cars.map((car: Car) => {
         return (
           <h1 key={car.id}>
             <Link href={`/cars/${car.id}`}>
