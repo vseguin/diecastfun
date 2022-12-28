@@ -1,7 +1,10 @@
+import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "../utils/api";
+
+type Car = Prisma.carsGetPayload<{}>;
 
 export default function CarsIndex() {
   const router = useRouter();
@@ -9,7 +12,7 @@ export default function CarsIndex() {
 
   Object.keys(router.query).forEach((k) => {
     if (router.query[k]) {
-      searchParams.append(k, router.query[k].toString());
+      searchParams.append(k, router.query[k] as string);
     }
   });
 
@@ -22,7 +25,7 @@ export default function CarsIndex() {
 
   return (
     <div>
-      {data.items.map((car) => {
+      {data.items.map((car: Car) => {
         return (
           <h1 key={car.id}>
             <Link href={`/cars/${car.id}`}>

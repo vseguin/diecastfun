@@ -17,7 +17,7 @@ export default function ErasIndex({ eras }: Props) {
     <div>
       {eras.map((era) => {
         return (
-          <div key={era.name}>
+          <div key={era.name.toString()}>
             <Link href={`/cars?era=${era.name}`}>{era.name}</Link>
             <div>{era.count.toString()}</div>
           </div>

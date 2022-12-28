@@ -1,6 +1,8 @@
+// @ts-nocheck
 import { PrismaClient, Prisma } from "@prisma/client";
 
-export const fetcher = (...args) => fetch(...args).then((res) => res.json());
+export const fetcher = (...args: any[]) =>
+  fetch(...args).then((res) => res.json());
 
 export const getGroupedByCars = async (
   prisma: PrismaClient<

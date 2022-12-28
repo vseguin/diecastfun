@@ -11,7 +11,7 @@ export default function Navbar() {
     }
   }, [router.query.q]);
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     router.push({

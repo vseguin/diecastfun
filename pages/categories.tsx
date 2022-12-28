@@ -15,7 +15,7 @@ export default function CategoriesIndex({ categories }: Props) {
     <div>
       {categories.map((category) => {
         return (
-          <div key={category.name}>
+          <div key={category.name.toString()}>
             <Link href={`/cars?category=${category.name}`}>
               {category.name}
             </Link>
@@ -40,15 +40,18 @@ export async function getServerSideProps() {
     ],
   });
 
-  let tags = await prisma.tags.groupBy({
+  const tagsQuery = await prisma.tags.groupBy({
     by: ["tags"],
     _count: {
       _all: true,
     },
   });
-  tags = Object.assign({}, ...tags.map((t) => ({ [t.tags]: t._count._all })));
+  const tags = Object.assign(
+    {},
+    ...tagsQuery.map((t) => ({ [t.tags]: t._count._all }))
+  );
 
-  const result = categories.map((c) => {
+  const result = categories.map((c: { tags: string }) => {
     return { name: c.tags, count: tags[c.tags] };
   });
 
