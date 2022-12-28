@@ -1,6 +1,7 @@
 import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
+import { getGroupedByCars } from "../utils/api";
 
 type Brand = Prisma.brandsGetPayload<{}> & {
   count: Number;
@@ -10,7 +11,7 @@ type Props = {
   brands: Brand[];
 };
 
-export default function Brands({ brands }: Props) {
+export default function BrandsIndex({ brands }: Props) {
   return (
     <div>
       {brands.map((brand) => {
@@ -35,20 +36,10 @@ export async function getServerSideProps() {
     ],
   });
 
-  const cars = await prisma.cars.groupBy({
-    by: ["brand"],
-    _count: {
-      _all: true,
-    },
-  });
-
-  const groupedCars = Object.assign(
-    {},
-    ...cars.map((c) => ({ [c.brand]: c._count._all }))
-  );
+  const cars = await getGroupedByCars(prisma, "brand");
 
   const result = brands.map((b) => {
-    return { ...b, count: groupedCars[b.name] };
+    return { ...b, count: cars[b.name] };
   });
 
   return {

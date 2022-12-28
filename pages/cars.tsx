@@ -1,19 +1,17 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { fetcher } from "../utils/api";
 
-export default function Cars() {
+export default function CarsIndex() {
   const router = useRouter();
-  const { q, brand } = router.query;
-
   const searchParams = new URLSearchParams();
 
-  if (q) {
-    searchParams.append("q", q.toString());
-  }
-  if (brand) {
-    searchParams.append("brand", brand.toString());
-  }
+  Object.keys(router.query).forEach((k) => {
+    if (router.query[k]) {
+      searchParams.append(k, router.query[k].toString());
+    }
+  });
 
   const path = `/api/cars?${searchParams.toString()}`;
 
@@ -27,7 +25,9 @@ export default function Cars() {
       {data.items.map((car) => {
         return (
           <h1 key={car.id}>
-            {car.brand} {car.model}
+            <Link href={`/cars/${car.id}`}>
+              {car.brand} {car.model}
+            </Link>
           </h1>
         );
       })}

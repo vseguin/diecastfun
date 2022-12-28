@@ -25,7 +25,7 @@ model cars {
   model          String?   @db.VarChar(255)
   restored       Boolean?  @db.Bit(1)
   scale          String?   @db.VarChar(255)
-  tags           tags[]    @ignore
+  tags           tags[]
 
   @@index([brand], map: "BrandIndex")
   @@index([customized], map: "CustomizedIndex")
@@ -74,15 +74,14 @@ model queued_tags {
   @@ignore
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model tags {
   id   String @db.VarChar(255)
   tags String @db.VarChar(255)
   cars cars   @relation(fields: [id], references: [id], onUpdate: Restrict, map: "FK_7rl33od3pg8xd0fbmxq0fotsy")
 
+  @@unique([id, tags])
   @@index([id], map: "FKt4n1dd2ftua53wow42sybac0r")
   @@index([tags], map: "TagsIndex")
-  @@ignore
 }
 
 model views {

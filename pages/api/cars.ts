@@ -24,6 +24,32 @@ export default async function handler(
     });
   }
 
+  if (req.query.maker) {
+    queries.push({
+      maker: {
+        equals: req.query.maker,
+      },
+    });
+  }
+
+  if (req.query.era) {
+    queries.push({
+      era: {
+        equals: req.query.era,
+      },
+    });
+  }
+
+  if (req.query.category) {
+    queries.push({
+      tags: {
+        some: {
+          tags: req.query.category,
+        },
+      },
+    });
+  }
+
   if (req.query.q) {
     const words = req.query.q.split(" ");
     const wordQueries = [];
