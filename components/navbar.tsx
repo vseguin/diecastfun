@@ -15,7 +15,7 @@ export default function Navbar() {
     e.preventDefault();
 
     router.push({
-      pathname: "cars",
+      pathname: "/cars",
       query: { q: searchTerm },
     });
   };
