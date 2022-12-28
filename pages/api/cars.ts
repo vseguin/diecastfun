@@ -139,6 +139,9 @@ export default async function handler(
       : {};
 
   const cars = await prisma.cars.findMany({
+    include: {
+      tags: true,
+    },
     where: query,
     skip: page * per,
     take: per,
