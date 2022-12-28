@@ -1,9 +1,15 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Navbar() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    if (router.query.q) {
+      setSearchTerm(router.query.q.toString());
+    }
+  }, [router.query.q]);
 
   const onSubmit = (e) => {
     e.preventDefault();

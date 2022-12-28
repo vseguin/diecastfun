@@ -14,32 +14,49 @@ export default async function handler(
   const per = Number(req.query.per || 25);
   const page = Number(req.query.page || 0);
 
-  const query = req.query.q
-    ? {
-        OR: [
-          {
-            model: {
-              search: req.query.q,
-            },
+  const queries = [];
+
+  if (req.query.brand) {
+    queries.push({
+      brand: {
+        equals: req.query.brand,
+      },
+    });
+  }
+
+  if (req.query.q) {
+    queries.push({
+      OR: [
+        {
+          model: {
+            contains: req.query.q,
           },
-          {
-            brand: {
-              search: req.query.q,
-            },
+        },
+        {
+          brand: {
+            contains: req.query.q,
           },
-          {
-            maker: {
-              search: req.query.q,
-            },
+        },
+        {
+          maker: {
+            contains: req.query.q,
           },
-          {
-            color: {
-              search: req.query.q,
-            },
+        },
+        {
+          color: {
+            contains: req.query.q,
           },
-        ],
-      }
-    : {};
+        },
+      ],
+    });
+  }
+
+  const query =
+    queries.length > 0
+      ? {
+          AND: queries,
+        }
+      : {};
 
   const cars = await prisma.cars.findMany({
     where: query,
