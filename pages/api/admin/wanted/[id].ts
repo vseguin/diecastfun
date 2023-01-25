@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import authenticate from "../../../../lib/middlewares/authentication";
 import prisma from "../../../../lib/prisma";
 
-export default async function handler(
+const handler = async function (
   req: NextApiRequest,
   res: NextApiResponse<Response>
 ) {
@@ -24,4 +25,6 @@ export default async function handler(
     });
     res.status(204).end();
   }
-}
+};
+
+export default authenticate(handler);
