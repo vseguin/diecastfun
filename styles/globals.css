@@ -1,0 +1,15 @@
+a {
+    text-decoration: none;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    justify-content: center;
+}
+
+.main {
+    padding: 20px;
+}

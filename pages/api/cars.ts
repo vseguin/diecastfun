@@ -9,11 +9,15 @@ type Response = {
   total: Number;
 };
 
+const getThumbnailUrl = (id: string) => {
+  return `${process.env.STORAGE_URL}/images/cars-small/${id}-1.jpg`;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Response>
 ) {
-  const per = Number(req.query.per || 25);
+  const per = Number(req.query.per || 28);
   const page = Number(req.query.page || 0);
 
   const queries = [];
@@ -138,7 +142,7 @@ export default async function handler(
         }
       : {};
 
-  const cars = await prisma.cars.findMany({
+  let cars = await prisma.cars.findMany({
     include: {
       tags: true,
     },
@@ -148,6 +152,13 @@ export default async function handler(
   });
   const count = await prisma.cars.count({
     where: query,
+  });
+
+  cars = cars.map((c) => {
+    return {
+      thumbnail: getThumbnailUrl(c.id),
+      ...c,
+    };
   });
 
   res.status(200).json({ items: cars, per, page, total: count });

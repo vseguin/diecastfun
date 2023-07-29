@@ -1,13 +1,14 @@
-import { Prisma } from "@prisma/client";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../utils/api";
-
-type Car = Prisma.carsGetPayload<{}>;
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
+import CarList from "../components/carlist";
 
 export default function CarsIndex() {
+  const [loading, setLoading] = useState(true);
   const [cars, setCars] = useState([]);
   const router = useRouter();
   const searchParams = new URLSearchParams();
@@ -22,21 +23,31 @@ export default function CarsIndex() {
 
   useSWR(path, fetcher, {
     onSuccess: (data) => {
+      setLoading(false);
       setCars(data.items);
     },
   });
 
   return (
-    <div>
-      {cars.map((car: Car) => {
-        return (
-          <h1 key={car.id}>
-            <Link href={`/cars/${car.id}`}>
-              {car.brand} {car.model}
-            </Link>
-          </h1>
-        );
-      })}
-    </div>
+    <>
+      {loading && (
+        <Box className="flex flex-center">
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
+      {!loading && cars.length == 0 && (
+        <Typography variant="h6">
+          No results for {searchParams.get("q")}.
+        </Typography>
+      )}
+      {!loading && cars.length > 0 && (
+        <>
+          <Typography variant="h6">
+            Results for {searchParams.get("q")}
+          </Typography>
+          <CarList cars={cars} />
+        </>
+      )}
+    </>
   );
 }
