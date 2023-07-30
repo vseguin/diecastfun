@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../utils/api";
