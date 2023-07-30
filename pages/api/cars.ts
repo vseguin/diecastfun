@@ -1,16 +1,13 @@
 import { cars } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
+import { mapCarsWithThumbnails } from "../../utils/api";
 
 type Response = {
   items: cars[];
   page: Number;
   per: Number;
   total: Number;
-};
-
-const getThumbnailUrl = (id: string) => {
-  return `${process.env.STORAGE_URL}/images/cars-small/${id}-1.jpg`;
 };
 
 export default async function handler(
@@ -142,7 +139,7 @@ export default async function handler(
         }
       : {};
 
-  let cars = await prisma.cars.findMany({
+  const cars = await prisma.cars.findMany({
     include: {
       tags: true,
     },
@@ -154,12 +151,7 @@ export default async function handler(
     where: query,
   });
 
-  cars = cars.map((c) => {
-    return {
-      thumbnail: getThumbnailUrl(c.id),
-      ...c,
-    };
-  });
-
-  res.status(200).json({ items: cars, per, page, total: count });
+  res
+    .status(200)
+    .json({ items: mapCarsWithThumbnails(cars), per, page, total: count });
 }

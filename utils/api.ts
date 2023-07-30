@@ -23,3 +23,12 @@ export const getGroupedByCars = async (
     ...cars.map((c) => ({ [c[criteria]]: c._count._all }))
   );
 };
+
+export const mapCarsWithThumbnails = (cars: Prisma.carsGetPayload<{}>[]) => {
+  return cars.map((c) => {
+    return {
+      thumbnail: `${process.env.STORAGE_URL}/images/cars-small/${c.id}-1.jpg`,
+      ...c,
+    };
+  });
+};

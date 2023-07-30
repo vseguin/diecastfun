@@ -1,9 +1,5 @@
-import { Prisma } from "@prisma/client";
+import { Car } from "../utils/types";
 import GridList from "./gridlist";
-
-type Car = Prisma.carsGetPayload<{}> & {
-  thumbnail: string;
-};
 
 type Props = {
   cars: Car[];

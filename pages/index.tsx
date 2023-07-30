@@ -1,16 +1,21 @@
-import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import prisma from "../lib/prisma";
 import { Typography } from "@mui/material";
+import CarList from "../components/carlist";
+import { Car } from "../utils/types";
+import { mapCarsWithThumbnails } from "../utils/api";
 
-type Car = Prisma.carsGetPayload<{}>;
 type Props = {
   featuredCar: Car;
-  newReleases: Car[];
+  latestAdditions: Car[];
   totalCount: Number;
 };
 
-export default function Home({ featuredCar, newReleases, totalCount }: Props) {
+export default function Home({
+  featuredCar,
+  latestAdditions,
+  totalCount,
+}: Props) {
   return (
     <>
       <main>
@@ -18,21 +23,11 @@ export default function Home({ featuredCar, newReleases, totalCount }: Props) {
         <span> {totalCount.toString()} </span>
         <span>cars.</span>
         <div>
-          Featured Car: <span>{featuredCar.brand}</span>{" "}
+          Featured car: <span>{featuredCar.brand}</span>{" "}
           <span>{featuredCar.model}</span>
         </div>
-        <h1>New Releases</h1>
-        <div>
-          {newReleases.map((car: Car) => {
-            return (
-              <h1 key={car.id}>
-                <Link href={`/cars/${car.id}`}>
-                  {car.brand} {car.model}
-                </Link>
-              </h1>
-            );
-          })}
-        </div>
+        <Typography variant="h3">Latest additions</Typography>
+        <CarList cars={latestAdditions} />
         <Link href="/cars?customized=true">See customs</Link>
         <Link href="/cars?restored=true">See restorations</Link>
       </main>
@@ -55,17 +50,20 @@ export async function getServerSideProps() {
     },
   });
 
-  const now = new Date();
-  now.setMonth(now.getMonth() - 1);
-  const newReleases = await prisma.cars.findMany({
-    where: {
-      insertion_date: {
-        gte: now,
+  let latestAdditions = await prisma.cars.findMany({
+    orderBy: [
+      {
+        insertion_date: "desc",
       },
-    },
+    ],
+    take: 50,
   });
 
+  latestAdditions = mapCarsWithThumbnails(latestAdditions).sort((a, b) =>
+    (a.id || "").localeCompare(b.id || "")
+  );
+
   return {
-    props: { featuredCar, newReleases, totalCount },
+    props: { featuredCar, latestAdditions, totalCount },
   };
 }
