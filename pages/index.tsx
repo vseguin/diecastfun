@@ -22,12 +22,12 @@ export default function Home({
         <span>I currently have</span>
         <span> {totalCount.toString()} </span>
         <span>cars.</span>
+        <Typography variant="h3">Latest additions</Typography>
+        <CarList cars={latestAdditions} />
         <div>
           Featured car: <span>{featuredCar.brand}</span>{" "}
           <span>{featuredCar.model}</span>
         </div>
-        <Typography variant="h3">Latest additions</Typography>
-        <CarList cars={latestAdditions} />
         <Link href="/cars?customized=true">See customs</Link>
         <Link href="/cars?restored=true">See restorations</Link>
       </main>
@@ -56,7 +56,7 @@ export async function getServerSideProps() {
         insertion_date: "desc",
       },
     ],
-    take: 50,
+    take: 48,
   });
 
   latestAdditions = mapCarsWithThumbnails(latestAdditions).sort((a, b) =>
