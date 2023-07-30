@@ -1,7 +1,7 @@
 import prisma from "../../lib/prisma";
 import { Prisma } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "../../utils/api";
 import Link from "next/link";
