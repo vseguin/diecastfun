@@ -2,9 +2,10 @@ import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getGroupedByCars } from "../utils/api";
 import GridList from "../components/gridlist";
+import { pluralize } from "../utils/typography";
 
 type Maker = Prisma.makersGetPayload<{}> & {
-  count: Number;
+  count: number;
   id: string;
   thumbnail: string;
 };
@@ -20,7 +21,7 @@ export default function MakersIndex({ makers }: Props) {
         firstTitleFormatter={(m) => `${m.name}`}
         items={makers}
         linkFormatter={(m) => `/cars?maker=${m.name}`}
-        secondTitleFormatter={(m) => `${m.count} cars`}
+        secondTitleFormatter={(m) => `${pluralize(m.count, "car")}`}
       />
     </div>
   );

@@ -32,7 +32,14 @@ export default function CarsIndex() {
     },
   });
 
-  const query = searchParams.get("q");
+  let searchTerms = [];
+  const supportedQueryParams = ["q", "maker"];
+  for (const [key, value] of searchParams.entries()) {
+    if (supportedQueryParams.includes(key)) {
+      searchTerms.push(value);
+    }
+  }
+  const query = searchTerms.join(",");
 
   return (
     <>
