@@ -11,29 +11,32 @@ type Item = {
 };
 
 type Props<T extends Item> = {
+  imageFit?: string;
   firstTitleFormatter: (item: T) => string;
   items: T[];
+  linkFormatter: (item: T) => string;
   secondTitleFormatter?: (item: T) => string;
-  section: string;
 };
 
 export default function GridList<T extends Item>({
   firstTitleFormatter,
+  imageFit = "contain",
   items,
+  linkFormatter,
   secondTitleFormatter,
-  section,
 }: Props<T>) {
   return (
     <Grid container spacing={2}>
       {items.map((item) => {
         return (
           <Grid item key={item.id} xs={12} sm={4} md={3}>
-            <Link href={`/${section}/${item.id}`}>
+            <Link href={linkFormatter(item)}>
               <Card sx={{ maxWidth: 300 }}>
                 <CardMedia
                   component="img"
                   image={item.thumbnail}
                   height="200"
+                  sx={{ backgroundSize: imageFit, objectFit: imageFit }}
                 />
                 <CardContent>
                   <Typography gutterBottom component="div">

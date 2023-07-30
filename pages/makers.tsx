@@ -1,10 +1,12 @@
 import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
-import Link from "next/link";
 import { getGroupedByCars } from "../utils/api";
+import GridList from "../components/gridlist";
 
 type Maker = Prisma.makersGetPayload<{}> & {
   count: Number;
+  id: string;
+  thumbnail: string;
 };
 
 type Props = {
@@ -14,14 +16,12 @@ type Props = {
 export default function MakersIndex({ makers }: Props) {
   return (
     <div>
-      {makers.map((maker) => {
-        return (
-          <div key={maker.name}>
-            <Link href={`/cars?maker=${maker.name}`}>{maker.name}</Link>
-            <div>{maker.count.toString()}</div>
-          </div>
-        );
-      })}
+      <GridList
+        firstTitleFormatter={(m) => `${m.name}`}
+        items={makers}
+        linkFormatter={(m) => `/cars?maker=${m.name}`}
+        secondTitleFormatter={(m) => `${m.count} cars`}
+      />
     </div>
   );
 }
@@ -38,7 +38,14 @@ export async function getServerSideProps() {
   const cars = await getGroupedByCars(prisma, "maker");
 
   const result = makers.map((m) => {
-    return { ...m, count: cars[m.name] };
+    return {
+      ...m,
+      count: cars[m.name],
+      id: m.name,
+      thumbnail: `${process.env.STORAGE_URL}/images/makers/${m.name
+        .toLowerCase()
+        .replace(" ", "")}.png`,
+    };
   });
 
   return {

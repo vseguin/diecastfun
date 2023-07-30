@@ -15,9 +15,10 @@ export default function CarList({ cars }: Props) {
   return (
     <GridList
       firstTitleFormatter={firstTitleFormatter}
+      imageFit="cover"
       items={cars}
+      linkFormatter={(c) => `/cars/${c.id}`}
       secondTitleFormatter={secondTitleFormatter}
-      section="cars"
     />
   );
 }
