@@ -4,6 +4,7 @@ import { Typography } from "@mui/material";
 import CarList from "../components/carlist";
 import { Car } from "../utils/types";
 import { mapCarsWithThumbnails } from "../utils/api";
+import Box from "@mui/material/Box";
 
 type Props = {
   featuredCar: Car;
@@ -22,12 +23,16 @@ export default function Home({
         <span>I currently have</span>
         <span> {totalCount.toString()} </span>
         <span>cars.</span>
-        <Typography variant="h3">Latest additions</Typography>
-        <CarList cars={latestAdditions} />
-        <div>
-          Featured car: <span>{featuredCar.brand}</span>{" "}
-          <span>{featuredCar.model}</span>
-        </div>
+        <Box>
+          <Typography variant="h3">Latest additions</Typography>
+          <CarList cars={latestAdditions} />
+        </Box>
+        <Box>
+          <Typography variant="h3">Featured car</Typography>
+          <Box>
+            <span>{featuredCar.brand}</span> <span>{featuredCar.model}</span>
+          </Box>
+        </Box>
         <Link href="/cars?customized=true">See customs</Link>
         <Link href="/cars?restored=true">See restorations</Link>
       </main>
