@@ -6,18 +6,12 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import CarList from "../components/carlist";
+import { useSearchParams } from "next/navigation";
 
 export default function CarsIndex() {
   const [loading, setLoading] = useState(true);
   const [cars, setCars] = useState([]);
-  const router = useRouter();
-  const searchParams = new URLSearchParams();
-
-  Object.keys(router.query).forEach((k) => {
-    if (router.query[k]) {
-      searchParams.append(k, router.query[k] as string);
-    }
-  });
+  const searchParams = useSearchParams();
 
   const path = `/api/cars?${searchParams.toString()}`;
 
