@@ -28,6 +28,8 @@ export default function CarsIndex() {
     },
   });
 
+  const query = searchParams.get("q");
+
   return (
     <>
       {loading && (
@@ -36,15 +38,11 @@ export default function CarsIndex() {
         </Box>
       )}
       {!loading && cars.length == 0 && (
-        <Typography variant="h6">
-          No results for {searchParams.get("q")}.
-        </Typography>
+        <Typography variant="h6">No results for {query}.</Typography>
       )}
       {!loading && cars.length > 0 && (
         <>
-          <Typography variant="h6">
-            Results for {searchParams.get("q")}
-          </Typography>
+          {query && <Typography variant="h6">Results for {query}</Typography>}
           <CarList cars={cars} />
         </>
       )}
