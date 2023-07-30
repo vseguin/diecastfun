@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 
 export default function Footer() {
   return (
-    <Box className="flex flex-wrap">
+    <Box className="flex flex-wrap" sx={{ marginTop: "auto" }}>
       <Typography component="div">Built with love using NextJS.</Typography>
       <div>
         <Typography component="div">
