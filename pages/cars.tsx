@@ -54,11 +54,10 @@ export default function CarsIndex() {
       {!loading && cars.length > 0 && (
         <>
           <Box
-            className="flex"
+            className="flex flex-wrap"
             sx={{
               alignItems: "center",
               justifyContent: query ? "space-between" : "flex-end",
-              flexWrap: "wrap",
             }}
           >
             {query && <Typography variant="h6">Results for {query}</Typography>}

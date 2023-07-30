@@ -10,6 +10,10 @@ a {
     justify-content: center;
 }
 
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
 .main {
     padding: 20px;
 }
