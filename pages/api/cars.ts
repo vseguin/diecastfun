@@ -17,7 +17,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Response>
 ) {
-  const per = Number(req.query.per || 28);
+  const per = Number(req.query.per || 24);
   const page = Number(req.query.page || 0);
 
   const queries = [];

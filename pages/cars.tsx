@@ -7,24 +7,28 @@ import Typography from "@mui/material/Typography";
 import CarList from "../components/carlist";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import Pagination from "../components/pagination";
 
 export default function CarsIndex() {
   const [loading, setLoading] = useState(true);
   const [cars, setCars] = useState([]);
+  const [total, setTotal] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
   const path = `/api/cars?${searchParams.toString()}`;
+  const page = router.query.page ? parseInt(router.query.page.toString()) : 0;
 
   useEffect(() => {
     if (router.query.q) {
       setLoading(true);
     }
-  }, [router.query.q]);
+  }, [router.query]);
 
   useSWR(path, fetcher, {
     onSuccess: (data) => {
       setLoading(false);
       setCars(data.items);
+      setTotal(data.total);
     },
   });
 
@@ -42,7 +46,17 @@ export default function CarsIndex() {
       )}
       {!loading && cars.length > 0 && (
         <>
-          {query && <Typography variant="h6">Results for {query}</Typography>}
+          <Box
+            className="flex"
+            sx={{
+              alignItems: "center",
+              justifyContent: query ? "space-between" : "flex-end",
+              flexWrap: "wrap",
+            }}
+          >
+            {query && <Typography variant="h6">Results for {query}</Typography>}
+            <Pagination total={total} page={page} />
+          </Box>
           <CarList cars={cars} />
         </>
       )}

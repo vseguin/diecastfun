@@ -24,7 +24,7 @@ export default function GridList<T extends Item>({
   section,
 }: Props<T>) {
   return (
-    <Grid container rowSpacing={2} spacing={2}>
+    <Grid container spacing={2}>
       {items.map((item) => {
         return (
           <Grid item key={item.id} xs={12} sm={4} md={3}>
