@@ -122,9 +122,12 @@ export default function CarPage({ car }: Props) {
           </ImageList>
         </Box>
       </Box>
-      <div>
-        <CarList cars={similarCars} />
-      </div>
+      {similarCars.length && (
+        <Box>
+          <Typography variant="h4">See also</Typography>
+          <CarList cars={similarCars} />
+        </Box>
+      )}
     </>
   );
 }
