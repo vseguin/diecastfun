@@ -1,7 +1,7 @@
 import { cars } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../lib/prisma";
-import { mapCarsWithThumbnails } from "../../utils/api";
+import { mapCars } from "../../utils/api";
 
 type Response = {
   items: cars[];
@@ -151,7 +151,5 @@ export default async function handler(
     where: query,
   });
 
-  res
-    .status(200)
-    .json({ items: mapCarsWithThumbnails(cars), per, page, total: count });
+  res.status(200).json({ items: mapCars(cars), per, page, total: count });
 }

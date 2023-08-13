@@ -24,11 +24,18 @@ export const getGroupedByCars = async (
   );
 };
 
-export const mapCarsWithThumbnails = (cars: Prisma.carsGetPayload<{}>[]) => {
-  return cars.map((c) => {
-    return {
-      thumbnail: `${process.env.STORAGE_URL}/images/cars-small/${c.id}-1.jpg`,
-      ...c,
-    };
-  });
+export const mapCar = (car: Prisma.carsGetPayload<{}>) => {
+  return {
+    images: [
+      `${process.env.STORAGE_URL}/images/cars/${car.id}-1.jpg`,
+      `${process.env.STORAGE_URL}/images/cars/${car.id}-2.jpg`,
+      `${process.env.STORAGE_URL}/images/cars/${car.id}-3.jpg`,
+    ],
+    thumbnail: `${process.env.STORAGE_URL}/images/cars-small/${car.id}-1.jpg`,
+    ...car,
+  };
+};
+
+export const mapCars = (cars: Prisma.carsGetPayload<{}>[]) => {
+  return cars.map((c) => mapCar(c));
 };

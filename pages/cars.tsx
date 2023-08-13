@@ -60,7 +60,7 @@ export default function CarsIndex() {
               justifyContent: query ? "space-between" : "flex-end",
             }}
           >
-            {query && <Typography variant="h6">Results for {query}</Typography>}
+            {query && <Typography variant="h4">Results for {query}</Typography>}
             <Pagination total={total} page={page} />
           </Box>
           <CarList cars={cars} />
