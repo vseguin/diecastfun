@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  experimental: {
+    swcPlugins: [["next-superjson-plugin", {}]],
+  },
   reactStrictMode: true,
   swcMinify: true,
   modularizeImports: {
@@ -17,7 +20,3 @@ const nextConfig = {
     },
   },
 }
-
-const { withSuperjson } = require('next-superjson')
-
-module.exports = withSuperjson()(nextConfig)
