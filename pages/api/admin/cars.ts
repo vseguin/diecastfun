@@ -90,7 +90,6 @@ const handler = async function (
       data: Object.assign({}, req.body, {
         id,
         insertion_date: new Date(),
-        count: 0, // TODO, remove when old app is unplugged
         scale: req.body.scale || "1:64",
         customized: req.body.customized || false,
         restored: req.body.restored || false,
