@@ -44,7 +44,7 @@ export default function CarsIndex() {
   return (
     <>
       {loading && (
-        <Box className="flex flex-center">
+        <Box className="flex flex-justify-center">
           <CircularProgress color="inherit" />
         </Box>
       )}

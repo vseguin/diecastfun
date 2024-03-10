@@ -7,8 +7,16 @@ a {
     display: flex;
 }
 
-.flex-center {
+.flex-align-center {
+    align-items: center;
+}
+
+.flex-justify-center {
     justify-content: center;
+}
+
+.flex-grow {
+    flex-grow: 1;
 }
 
 .flex-wrap {
