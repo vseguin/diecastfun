@@ -71,7 +71,7 @@ export async function getServerSideProps({ query }: GetServerSidePropsContext) {
   const cars = await getGroupedByCars(prisma, "brand");
 
   const result = brands.map((b) => {
-    return { ...b, count: cars[b.name] };
+    return { ...b, count: cars[b.name] || 0 };
   });
 
   return {
