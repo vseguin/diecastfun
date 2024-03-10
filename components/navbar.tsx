@@ -50,7 +50,7 @@ export default function Navbar() {
   };
 
   return (
-    <Box className="flex-grow">
+    <Box>
       <AppBar position="static" sx={{ boxShadow: "none" }}>
         <Toolbar>
           <Box className="flex flex-align-center flex-grow">
