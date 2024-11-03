@@ -45,7 +45,7 @@ export default function CarPage({ car }: Props) {
           sx={{ width: lowerThanMid ? null : "50%", flexDirection: "column" }}
         >
           <Typography variant="h4">
-            {car.brand} {car.model}
+            {car.brand} {car.model} {car.year}
           </Typography>
           <TableContainer>
             <Table>

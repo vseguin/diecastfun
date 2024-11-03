@@ -10,9 +10,11 @@ type Response = cars;
 const generateId = async ({
   brand,
   model,
+  year,
 }: {
   brand: string;
   model: string;
+  year: string;
 }): Promise<string> => {
   const count = await prisma.cars.count({
     where: {
@@ -32,7 +34,10 @@ const generateId = async ({
   });
 
   const id =
-    brand.toLowerCase() + model.toLowerCase() + (count === 0 ? "" : count);
+    brand.toLowerCase() +
+    model.toLowerCase() +
+    year +
+    (count === 0 ? "" : count);
   return id.replaceAll("/", "").replaceAll(" ", "").replaceAll(".", "");
 };
 
@@ -46,11 +51,12 @@ const schema = Joi.object({
   customized: Joi.boolean(),
   restored: Joi.boolean(),
   tags: Joi.array().items(Joi.string()).required(),
+  year: Joi.string().required(),
 });
 
 const handler = async function (
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<Response>,
 ) {
   if (req.method === "POST") {
     const id = await generateId(req.body);

@@ -6,7 +6,8 @@ type Props = {
 };
 
 export default function CarList({ cars }: Props) {
-  const firstTitleFormatter = (car: Car) => `${car.brand} ${car.model}`;
+  const firstTitleFormatter = (car: Car) =>
+    `${car.brand} ${car.model}${car.year ? ` ${car.year}` : ""}`;
   const secondTitleFormatter = (car: Car) => `${car.maker}`;
   return (
     <GridList

@@ -25,6 +25,7 @@ model cars {
   restored       Boolean?  @db.Bit(1)
   scale          String?   @db.VarChar(255)
   tags           tags[]
+  year           String?  @db.VarChar(255)
 
   @@index([brand], map: "BrandIndex")
   @@index([customized], map: "CustomizedIndex")
