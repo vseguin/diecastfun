@@ -10,7 +10,7 @@ export const getGroupedByCars = async (
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >,
-  criteria: string
+  criteria: string,
 ) => {
   const cars = await prisma.cars.groupBy({
     by: [criteria],
@@ -20,16 +20,16 @@ export const getGroupedByCars = async (
   });
   return Object.assign(
     {},
-    ...cars.map((c) => ({ [c[criteria]]: c._count._all }))
+    ...cars.map((c) => ({ [c[criteria]]: c._count._all })),
   );
 };
 
 export const mapCar = (car: Prisma.carsGetPayload<{}>) => {
   return {
     images: [
-      `${process.env.STORAGE_URL}/images/cars/${car.id}-1.jpg`,
-      `${process.env.STORAGE_URL}/images/cars/${car.id}-2.jpg`,
-      `${process.env.STORAGE_URL}/images/cars/${car.id}-3.jpg`,
+      `/images/cars/${car.id}-1.jpg`,
+      `/images/cars/${car.id}-2.jpg`,
+      `/images/cars/${car.id}-3.jpg`,
     ],
     thumbnail: `${process.env.STORAGE_URL}/images/cars-small/${car.id}-1.jpg`,
     ...car,

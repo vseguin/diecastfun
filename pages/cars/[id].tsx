@@ -18,6 +18,7 @@ import { Car } from "../../utils/types";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CarList from "../../components/carlist";
+import Image from "next/image";
 
 type Props = {
   car: Car;
@@ -111,13 +112,34 @@ export default function CarPage({ car }: Props) {
             }}
           >
             <ImageListItem key={car.images[0]} cols={2} rows={1}>
-              <img src={car.images[0]} alt="" loading="lazy" />
+              <Image
+                src={car.images[0]}
+                alt=""
+                loading="lazy"
+                width={0}
+                height={0}
+                style={{ width: "100%", height: "auto" }}
+              />
             </ImageListItem>
             <ImageListItem key={car.images[1]} cols={1} rows={1}>
-              <img src={car.images[1]} alt="" loading="lazy" />
+              <Image
+                src={car.images[1]}
+                alt=""
+                loading="lazy"
+                width={0}
+                height={0}
+                style={{ width: "100%", height: "auto" }}
+              />
             </ImageListItem>
             <ImageListItem key={car.images[2]} cols={1} rows={1}>
-              <img src={car.images[2]} alt="" loading="lazy" />
+              <Image
+                src={car.images[2]}
+                alt=""
+                loading="lazy"
+                width={0}
+                height={0}
+                style={{ width: "100%", height: "auto" }}
+              />
             </ImageListItem>
           </ImageList>
         </Box>
