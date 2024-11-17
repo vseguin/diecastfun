@@ -29,6 +29,11 @@ const generateId = async ({
             equals: model,
           },
         },
+        {
+          year: {
+            equals: year,
+          },
+        },
       ],
     },
   });
@@ -51,7 +56,7 @@ const schema = Joi.object({
   customized: Joi.boolean(),
   restored: Joi.boolean(),
   tags: Joi.array().items(Joi.string()).required(),
-  year: Joi.string().required(),
+  year: Joi.string(),
 });
 
 const handler = async function (
