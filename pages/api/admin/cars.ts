@@ -38,11 +38,8 @@ const generateId = async ({
     },
   });
 
-  const id =
-    brand.toLowerCase() +
-    model.toLowerCase() +
-    year +
-    (count === 0 ? "" : count);
+  const id = `${brand.toLowerCase()}${model.toLowerCase()}${year || ""}${count === 0 ? "" : count}`;
+
   return id.replaceAll("/", "").replaceAll(" ", "").replaceAll(".", "");
 };
 
