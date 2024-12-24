@@ -16,31 +16,20 @@ const generateId = async ({
   model: string;
   year: string;
 }): Promise<string> => {
+  const id = `${brand.toLowerCase()}${model.toLowerCase()}${year || ""}`
+    .replaceAll("/", "")
+    .replaceAll(" ", "")
+    .replaceAll(".", "");
+
   const count = await prisma.cars.count({
     where: {
-      AND: [
-        {
-          brand: {
-            equals: brand,
-          },
-        },
-        {
-          model: {
-            equals: model,
-          },
-        },
-        {
-          year: {
-            equals: year,
-          },
-        },
-      ],
+      id: {
+        startsWith: id,
+      },
     },
   });
 
-  const id = `${brand.toLowerCase()}${model.toLowerCase()}${year || ""}${count === 0 ? "" : count}`;
-
-  return id.replaceAll("/", "").replaceAll(" ", "").replaceAll(".", "");
+  return `${id}${count === 0 ? "" : count}`;
 };
 
 const schema = Joi.object({
