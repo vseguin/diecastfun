@@ -1,11 +1,12 @@
 import prisma from "../lib/prisma";
-import { Prisma } from "@prisma/client";
-import Link from "next/link";
+import GridList from "../components/gridlist";
 import { getGroupedByCars } from "../utils/api";
+import { display, pluralize } from "../utils/typography";
 
 type Era = {
-  name: String;
-  count: Number;
+  count: number;
+  id: string;
+  thumbnail: string;
 };
 
 type Props = {
@@ -15,14 +16,12 @@ type Props = {
 export default function ErasIndex({ eras }: Props) {
   return (
     <div>
-      {eras.map((era) => {
-        return (
-          <div key={era.name.toString()}>
-            <Link href={`/cars?era=${era.name}`}>{era.name}</Link>
-            <div>{era.count.toString()}</div>
-          </div>
-        );
-      })}
+      <GridList
+        firstTitleFormatter={(e) => `${display(e.id)}`}
+        items={eras}
+        linkFormatter={(e) => `/cars?era=${e.id}`}
+        secondTitleFormatter={(c) => `${pluralize(c.count, "car")}`}
+      />
     </div>
   );
 }
@@ -42,7 +41,11 @@ export async function getServerSideProps() {
   const cars = await getGroupedByCars(prisma, "era");
 
   const result = eras.map((e) => {
-    return { name: e, count: cars[e] };
+    return {
+      count: cars[e],
+      id: e,
+      thumbnail: `${process.env.STORAGE_URL}/images/eras/${e.toLowerCase()}.png`,
+    };
   });
 
   return {
