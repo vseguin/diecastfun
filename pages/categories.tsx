@@ -1,9 +1,11 @@
 import prisma from "../lib/prisma";
-import Link from "next/link";
+import GridList from "../components/gridlist";
+import { pluralize } from "../utils/typography";
 
 type Category = {
-  name: String;
-  count: Number;
+  count: number;
+  id: string;
+  thumbnail: string;
 };
 
 type Props = {
@@ -13,16 +15,12 @@ type Props = {
 export default function CategoriesIndex({ categories }: Props) {
   return (
     <div>
-      {categories.map((category) => {
-        return (
-          <div key={category.name.toString()}>
-            <Link href={`/cars?category=${category.name}`}>
-              {category.name}
-            </Link>
-            <div>{category.count.toString()}</div>
-          </div>
-        );
-      })}
+      <GridList
+        firstTitleFormatter={(c) => `${c.id}`}
+        items={categories}
+        linkFormatter={(c) => `/cars?category=${c.id}`}
+        secondTitleFormatter={(c) => `${pluralize(c.count, "car")}`}
+      />
     </div>
   );
 }
@@ -48,11 +46,15 @@ export async function getServerSideProps() {
   });
   const tags = Object.assign(
     {},
-    ...tagsQuery.map((t) => ({ [t.tags]: t._count._all }))
+    ...tagsQuery.map((t) => ({ [t.tags]: t._count._all })),
   );
 
   const result = categories.map((c: { tags: string }) => {
-    return { name: c.tags, count: tags[c.tags] };
+    return {
+      count: tags[c.tags],
+      id: c.tags,
+      thumbnail: `${process.env.STORAGE_URL}/images/tags/${c.tags.toLowerCase()}.png`,
+    };
   });
 
   return {
