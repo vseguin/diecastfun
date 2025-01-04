@@ -3,7 +3,7 @@ import prisma from "../lib/prisma";
 import { Typography } from "@mui/material";
 import CarList from "../components/carlist";
 import { Car } from "../utils/types";
-import { mapCars } from "../utils/api";
+import { mapCar, mapCars } from "../utils/api";
 import Box from "@mui/material/Box";
 
 type Props = {
@@ -29,12 +29,14 @@ export default function Home({
         </Box>
         <Box>
           <Typography variant="h4">Featured car</Typography>
-          <Box>
-            <span>{featuredCar.brand}</span> <span>{featuredCar.model}</span>
-          </Box>
+          <CarList cars={[featuredCar]} />
         </Box>
-        <Link href="/cars?customized=true">See customs</Link>
-        <Link href="/cars?restored=true">See restorations</Link>
+        <Box>
+          <Link href="/cars?customized=true">See customs</Link>
+        </Box>
+        <Box>
+          <Link href="/cars?restored=true">See restorations</Link>
+        </Box>
       </main>
     </>
   );
@@ -65,10 +67,10 @@ export async function getServerSideProps() {
   });
 
   latestAdditions = mapCars(latestAdditions).sort((a, b) =>
-    (a.id || "").localeCompare(b.id || "")
+    (a.id || "").localeCompare(b.id || ""),
   );
 
   return {
-    props: { featuredCar, latestAdditions, totalCount },
+    props: { featuredCar: mapCar(featuredCar), latestAdditions, totalCount },
   };
 }
