@@ -1,3 +1,11 @@
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
 
@@ -9,15 +17,30 @@ type Props = {
 
 export default function WantedList({ cars }: Props) {
   return (
-    <div>
-      {cars.map((car) => {
-        return (
-          <h1 key={car.id}>
-            {car.brand} {car.model}
-          </h1>
-        );
-      })}
-    </div>
+    <TableContainer>
+      <Table sx={{ maxWidth: 800 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ fontWeight: "bold" }}>Maker</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Brand
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold" }} align="right">
+              Model
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {cars.map((car) => (
+            <TableRow key={car.id}>
+              <TableCell>{car.maker}</TableCell>
+              <TableCell align="right">{car.brand}</TableCell>
+              <TableCell align="right">{car.model}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
