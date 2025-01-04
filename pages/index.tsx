@@ -71,6 +71,10 @@ export async function getServerSideProps() {
   );
 
   return {
-    props: { featuredCar: mapCar(featuredCar), latestAdditions, totalCount },
+    props: {
+      featuredCar: featuredCar ? mapCar(featuredCar) : null,
+      latestAdditions,
+      totalCount,
+    },
   };
 }
