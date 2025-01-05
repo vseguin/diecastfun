@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "/node_modules/flag-icons/css/flag-icons.min.css";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { ThemeProvider } from "@mui/material/styles";

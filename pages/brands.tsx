@@ -3,6 +3,11 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { getGroupedByCars } from "../utils/api";
 import { GetServerSidePropsContext } from "next";
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import * as changeCase from "change-case";
+import lookup from "country-code-lookup";
 
 type Brand = Prisma.brandsGetPayload<{}> & {
   count: Number;
@@ -10,20 +15,60 @@ type Brand = Prisma.brandsGetPayload<{}> & {
 
 type Props = {
   brands: Brand[];
-  countries: String[];
+  countries: string[];
 };
 
 export default function BrandsIndex({ brands, countries }: Props) {
-  return (
-    <div>
-      {countries.map((country) => {
-        return (
-          <div key={country.toString()}>
-            <Link href={`/brands?country=${country}`}>{country}</Link>
-          </div>
-        );
-      })}
+  const router = useRouter();
+  const defaultValue = "None";
+  const [country, setCountry] = useState<string | undefined>(
+    (router.query.country as string) || defaultValue,
+  );
 
+  const onCountryChange = (value: string) => {
+    setCountry(value);
+    router.query.country = value === defaultValue ? undefined : value;
+    router.push(router);
+  };
+
+  return (
+    <Box>
+      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+        <InputLabel id="country-label">Country</InputLabel>
+        <Select
+          labelId="country-label"
+          value={country}
+          label="Country"
+          onChange={(e) => onCountryChange(e.target.value)}
+        >
+          <MenuItem key={defaultValue} value={defaultValue}>
+            {defaultValue}
+          </MenuItem>
+          {countries.map((c) => {
+            const displayValue = changeCase.capitalCase(c);
+            const countryCode = lookup
+              .byCountry(displayValue)
+              ?.iso2.toLowerCase();
+
+            return (
+              <MenuItem key={c.toString()} value={c}>
+                {
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box>{displayValue}</Box>&nbsp;
+                    <Box className={`fi fi-${countryCode}`}></Box>
+                  </Box>
+                }
+              </MenuItem>
+            );
+          })}
+        </Select>
+      </FormControl>
       {brands.map((brand) => {
         return (
           <div key={brand.name}>
@@ -33,7 +78,7 @@ export default function BrandsIndex({ brands, countries }: Props) {
           </div>
         );
       })}
-    </div>
+    </Box>
   );
 }
 

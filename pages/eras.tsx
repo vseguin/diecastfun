@@ -1,7 +1,8 @@
 import prisma from "../lib/prisma";
 import GridList from "../components/gridlist";
 import { getGroupedByCars } from "../utils/api";
-import { display, pluralize } from "../utils/typography";
+import { pluralize } from "../utils/typography";
+import * as changeCase from "change-case";
 
 type Era = {
   count: number;
@@ -17,7 +18,7 @@ export default function ErasIndex({ eras }: Props) {
   return (
     <div>
       <GridList
-        firstTitleFormatter={(e) => `${display(e.id)}`}
+        firstTitleFormatter={(e) => `${changeCase.sentenceCase(e.id)}`}
         items={eras}
         linkFormatter={(e) => `/cars?era=${e.id}`}
         secondTitleFormatter={(c) => `${pluralize(c.count, "car")}`}
