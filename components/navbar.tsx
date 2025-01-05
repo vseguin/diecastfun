@@ -4,15 +4,14 @@ import {
   Toolbar,
   Typography,
   Divider,
-  FormControl,
-  InputAdornment,
   TextField,
   IconButton,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search } from "@mui/icons-material";
+import React from "react";
 
 export default function Navbar() {
   const router = useRouter();

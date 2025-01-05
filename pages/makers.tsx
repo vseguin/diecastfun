@@ -1,14 +1,13 @@
 import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getGroupedByCars } from "../utils/api";
-import GridList from "../components/gridlist";
+import GridList, { GridItem } from "../components/gridlist";
 import { pluralize } from "../utils/typography";
 
-type Maker = Prisma.makersGetPayload<{}> & {
-  count: number;
-  id: string;
-  thumbnail: string;
-};
+type Maker = Prisma.makersGetPayload<{}> &
+  GridItem & {
+    count: number;
+  };
 
 type Props = {
   makers: Maker[];

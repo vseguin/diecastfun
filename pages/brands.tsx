@@ -7,12 +7,13 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import * as changeCase from "change-case";
 import lookup from "country-code-lookup";
-import GridList from "../components/gridlist";
+import GridList, { GridItem } from "../components/gridlist";
 import { pluralize } from "../utils/typography";
 
-type Brand = Prisma.brandsGetPayload<{}> & {
-  count: Number;
-};
+type Brand = Prisma.brandsGetPayload<{}> &
+  GridItem & {
+    count: number;
+  };
 
 type Props = {
   brands: Brand[];
@@ -37,8 +38,8 @@ export default function BrandsIndex({ brands, countries }: Props) {
     router.push(router);
   };
 
-  const getCountryCode = (country: string) => {
-    const displayValue = changeCase.capitalCase(country);
+  const getCountryCode = (country: string | null) => {
+    const displayValue = changeCase.capitalCase(country || "");
     return lookup.byCountry(displayValue)?.iso2.toLowerCase();
   };
 
@@ -79,9 +80,9 @@ export default function BrandsIndex({ brands, countries }: Props) {
         </Select>
       </FormControl>
       <GridList
-        firstTitleFormatter={(b) => `${b.name}`}
+        firstTitleFormatter={(b) => `${b.id}`}
         items={brands}
-        linkFormatter={(b) => `/cars?brand=${b.name}`}
+        linkFormatter={(b) => `/cars?brand=${b.id}`}
         secondTitleFormatter={(b) => (
           <Box>
             {`${pluralize(b.count, "car")}`} -{" "}
@@ -131,7 +132,7 @@ export async function getServerSideProps({ query }: GetServerSidePropsContext) {
       ...b,
       count: cars[b.name] || 0,
       id: b.name,
-      thumbnail: `${process.env.STORAGE_URL}/images/brands/${b.name.toLowerCase().replace(/[\s\-]/g, "")}.png`,
+      thumbnail: `${process.env.STORAGE_URL}/images/brands/${b.name.toLowerCase().replace(/[\s-]/g, "")}.png`,
     };
   });
 

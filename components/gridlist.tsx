@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 import Link from "next/link";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -6,12 +8,12 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
 
-type Item = {
+export type GridItem = {
   id: string;
   thumbnail: string;
 };
 
-type Props<T extends Item> = {
+type Props<T extends GridItem> = {
   imageFit?: string;
   firstTitleFormatter: (item: T) => string;
   items: T[];
@@ -19,7 +21,7 @@ type Props<T extends Item> = {
   secondTitleFormatter?: (item: T) => string | ReactNode;
 };
 
-export default function GridList<T extends Item>({
+export default function GridList<T extends GridItem>({
   firstTitleFormatter,
   imageFit = "contain",
   items,

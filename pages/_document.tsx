@@ -10,9 +10,10 @@ import { AppType } from "next/app";
 import { DiecastFunProps } from "./_app";
 import createEmotionCache from "../utils/createEmotionCache";
 import createEmotionServer from "@emotion/server/create-instance";
+import React from "react";
 
 interface MyDocumentProps extends DocumentProps {
-  emotionStyleTags: JSX.Element[];
+  emotionStyleTags: React.JSX.Element[];
 }
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
@@ -48,7 +49,7 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
       enhanceApp: (
         App: React.ComponentType<
           React.ComponentProps<AppType> & DiecastFunProps
-        >
+        >,
       ) =>
         function EnhanceApp(props) {
           return <App emotionCache={cache} {...props} />;

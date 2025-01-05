@@ -1,12 +1,10 @@
 import prisma from "../lib/prisma";
-import GridList from "../components/gridlist";
+import GridList, { GridItem } from "../components/gridlist";
 import { pluralize } from "../utils/typography";
 import * as changeCase from "change-case";
 
-type Category = {
+type Category = GridItem & {
   count: number;
-  id: string;
-  thumbnail: string;
 };
 
 type Props = {

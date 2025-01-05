@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import TablePagination from "@mui/material/TablePagination";
+import React from "react";
 
 type Props = {
   page: number;
@@ -11,7 +12,7 @@ export default function Pagination({ page, total }: Props) {
 
   const setPage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
+    newPage: number,
   ) => {
     push({ query: { ...query, page: newPage } }, undefined, { shallow: true });
   };
