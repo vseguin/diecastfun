@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import * as changeCase from "change-case";
 import lookup from "country-code-lookup";
+import GridList from "../components/gridlist";
+import { pluralize } from "../utils/typography";
 
 type Brand = Prisma.brandsGetPayload<{}> & {
   count: Number;
@@ -27,8 +29,18 @@ export default function BrandsIndex({ brands, countries }: Props) {
 
   const onCountryChange = (value: string) => {
     setCountry(value);
-    router.query.country = value === defaultValue ? undefined : value;
+    if (value === defaultValue) {
+      delete router.query.country;
+    } else {
+      router.query.country = value;
+    }
+
     router.push(router);
+  };
+
+  const getCountryCode = (country: string) => {
+    const displayValue = changeCase.capitalCase(country);
+    return lookup.byCountry(displayValue)?.iso2.toLowerCase();
   };
 
   return (
@@ -46,9 +58,7 @@ export default function BrandsIndex({ brands, countries }: Props) {
           </MenuItem>
           {countries.map((c) => {
             const displayValue = changeCase.capitalCase(c);
-            const countryCode = lookup
-              .byCountry(displayValue)
-              ?.iso2.toLowerCase();
+            const countryCode = getCountryCode(c);
 
             return (
               <MenuItem key={c.toString()} value={c}>
@@ -69,15 +79,17 @@ export default function BrandsIndex({ brands, countries }: Props) {
           })}
         </Select>
       </FormControl>
-      {brands.map((brand) => {
-        return (
-          <div key={brand.name}>
-            <Link href={`/cars?brand=${brand.name}`}>{brand.name}</Link>
-            <div>{brand.count.toString()}</div>
-            <div>{brand.country}</div>
-          </div>
-        );
-      })}
+      <GridList
+        firstTitleFormatter={(b) => `${b.name}`}
+        items={brands}
+        linkFormatter={(b) => `/cars?brand=${b.name}`}
+        secondTitleFormatter={(b) => (
+          <Box>
+            {`${pluralize(b.count, "car")}`} -{" "}
+            <Box className={`fi fi-${getCountryCode(b.country)}`}></Box>
+          </Box>
+        )}
+      />
     </Box>
   );
 }
@@ -116,7 +128,12 @@ export async function getServerSideProps({ query }: GetServerSidePropsContext) {
   const cars = await getGroupedByCars(prisma, "brand");
 
   const result = brands.map((b) => {
-    return { ...b, count: cars[b.name] || 0 };
+    return {
+      ...b,
+      count: cars[b.name] || 0,
+      id: b.name,
+      thumbnail: `${process.env.STORAGE_URL}/images/brands/${b.name.toLowerCase().replace(/[\s\-]/g, "")}.png`,
+    };
   });
 
   return {

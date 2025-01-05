@@ -4,6 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import { ReactNode } from "react";
 
 type Item = {
   id: string;
@@ -15,7 +16,7 @@ type Props<T extends Item> = {
   firstTitleFormatter: (item: T) => string;
   items: T[];
   linkFormatter: (item: T) => string;
-  secondTitleFormatter?: (item: T) => string;
+  secondTitleFormatter?: (item: T) => string | ReactNode;
 };
 
 export default function GridList<T extends Item>({
