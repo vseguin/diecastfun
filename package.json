@@ -50,5 +50,9 @@
       "prettier --write --ignore-unknown",
       "eslint --fix"
     ]
-  }
+  },
+  "cacheDirectories": [
+    "node_modules/",
+    ".next/cache/"
+  ]
 }
