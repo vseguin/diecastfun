@@ -1,6 +1,5 @@
 import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
-import Link from "next/link";
 import { getGroupedByCars } from "../utils/api";
 import { GetServerSidePropsContext } from "next";
 import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
