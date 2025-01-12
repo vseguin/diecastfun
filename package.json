@@ -42,6 +42,8 @@
     "eslint-config-prettier": "9.1.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "mongodb": "^6.12.0",
+    "openai": "^4.78.1",
     "prettier": "3.4.2",
     "prisma": "^6.1.0"
   },

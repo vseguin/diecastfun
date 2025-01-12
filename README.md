@@ -7,3 +7,9 @@ This is the 4th installment of this app, which evolved from a Windows Form deskt
 ```bash
 npm run dev
 ```
+
+## Running RAG sandbox
+
+```bash
+npx tsx scripts/<script>.ts
+```
