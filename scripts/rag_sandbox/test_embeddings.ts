@@ -17,7 +17,7 @@ const getCarAsText = (car: any) => {
   return `ID: ${car.id}, Name: ${car.brand} ${car.model}${car.year ? " " + car.year : ""}, Maker: ${car.maker}, Color: ${car.color}, Era: ${car.era}, Categories: ${car.tags.map((t: any) => t.tags).join(",")}`;
 };
 
-const query = "How many Mazda models do I own in my collection?";
+const query = "Give me details about all the Mazda RX-7 variants I have.";
 
 const loadData = async () => {
   const embedding = await openai.embeddings.create({
@@ -37,7 +37,7 @@ const loadData = async () => {
         queryVector: embedding.data[0].embedding,
         path: "car_embedding",
         numCandidates: 150,
-        limit: 10,
+        limit: 50,
       },
     },
     {
@@ -67,7 +67,7 @@ const loadData = async () => {
   const completion = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
-      { role: "system", content: "You are a car recommandation system." },
+      { role: "system", content: "You are a car diecast database." },
       {
         role: "user",
         content:
