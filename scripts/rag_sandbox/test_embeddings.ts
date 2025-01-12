@@ -1,11 +1,10 @@
-import OpenAI from "openai";
 import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
+import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { PromptTemplate } from "@langchain/core/prompts";
+import { RunnableSequence } from "@langchain/core/runnables";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 
-console.log("Running sandbox");
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 const mongoClient = new MongoClient(process.env.MONGO_DB_URL as string, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -13,73 +12,45 @@ const mongoClient = new MongoClient(process.env.MONGO_DB_URL as string, {
   },
 });
 
-const getCarAsText = (car: any) => {
+const formatCarAsText = (doc: any) => {
+  const car = doc.metadata;
   return `ID: ${car.id}, Name: ${car.brand} ${car.model}${car.year ? " " + car.year : ""}, Maker: ${car.maker}, Color: ${car.color}, Era: ${car.era}, Categories: ${car.tags.map((t: any) => t.tags).join(",")}`;
 };
 
-const query = "Give me details about all the Mazda RX-7 variants I have.";
+const query =
+  "Do I have models of Audi TT or something similar? If yes, list them all in a comprehensive way.";
 
 const loadData = async () => {
-  const embedding = await openai.embeddings.create({
+  const embeddings = new OpenAIEmbeddings({
     model: "text-embedding-3-large",
-    input: query,
-    encoding_format: "float",
   });
-
-  console.log(embedding);
 
   const collection = mongoClient.db("diecastfun").collection("cars");
-
-  const pipeline = [
-    {
-      $vectorSearch: {
-        index: "vector_index",
-        queryVector: embedding.data[0].embedding,
-        path: "car_embedding",
-        numCandidates: 150,
-        limit: 50,
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        id: 1,
-        brand: 1,
-        model: 1,
-        year: 1,
-        maker: 1,
-        color: 1,
-        era: 1,
-        tags: 1,
-        score: {
-          $meta: "vectorSearchScore",
-        },
-      },
-    },
-  ];
-
-  const results = await collection.aggregate(pipeline);
-  const search_results = [];
-  for await (const result of results) {
-    search_results.push(getCarAsText(result));
-  }
-
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      { role: "system", content: "You are a car diecast database." },
-      {
-        role: "user",
-        content:
-          "Answer this user query: " +
-          query +
-          " with the following context: " +
-          search_results,
-      },
-    ],
+  const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+    collection: collection,
+    indexName: "vector_index",
+    embeddingKey: "car_embedding",
   });
 
-  console.log(completion.choices[0].message.content);
+  const retriever = vectorStore.asRetriever(100);
+  const prompt = PromptTemplate.fromTemplate(
+    `You are a car dabatase representing a collection I own. Answer the question based on the following context: {context} Question: {question}`,
+  );
+  const model = new ChatOpenAI({});
+
+  const runnable = RunnableSequence.from([
+    prompt,
+    model,
+    new StringOutputParser(),
+  ]);
+
+  const answer = await runnable.invoke({
+    context: (await retriever.invoke(query))
+      .map((doc) => formatCarAsText(doc))
+      .join("\n") as any,
+    question: query,
+  });
+  console.log(answer);
 };
 
 loadData();

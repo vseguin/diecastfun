@@ -35,12 +35,16 @@
     "uuid": "^11.0.0"
   },
   "devDependencies": {
+    "@langchain/community": "^0.3.24",
+    "@langchain/mongodb": "^0.1.0",
+    "@langchain/openai": "^0.3.17",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/uuid": "^10.0.0",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.17",
     "eslint-config-prettier": "9.1.0",
     "husky": "^9.0.11",
+    "langchain": "^0.3.11",
     "lint-staged": "^15.2.2",
     "mongodb": "^6.12.0",
     "openai": "^4.78.1",
