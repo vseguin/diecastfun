@@ -24,15 +24,18 @@ const loadData = async () => {
   });
   const collection = mongoClient.db("diecastfun").collection("cars");
 
-  // Cleanup
-  await collection.deleteMany({});
-
   console.log(`Loaded ${cars.length} cars`);
 
   for (const car of cars) {
     const carAsText = `Name: ${car.brand} ${car.model}${car.year ? " " + car.year : ""}, Maker: ${car.maker}, Color: ${car.color}, Era: ${car.era}, Categories: ${car.tags.map((t) => t.tags).join(",")}`;
 
     console.log(carAsText);
+
+    const existingCar = await collection.findOne({ id: car.id });
+    if (existingCar != null) {
+      console.log(`Car ${car.id} already exists`);
+      continue;
+    }
 
     const embedding = await openai.embeddings.create({
       model: "text-embedding-3-large",
@@ -45,7 +48,7 @@ const loadData = async () => {
 
     console.log(result);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   }
 };
 

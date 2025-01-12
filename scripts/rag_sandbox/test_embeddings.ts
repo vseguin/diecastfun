@@ -14,13 +14,15 @@ const mongoClient = new MongoClient(process.env.MONGO_DB_URL as string, {
 });
 
 const getCarAsText = (car: any) => {
-  return `Name: ${car.brand} ${car.model}${car.year ? " " + car.year : ""}, Maker: ${car.maker}, Color: ${car.color}, Era: ${car.era}, Categories: ${car.tags.map((t: any) => t.tags).join(",")}`;
+  return `ID: ${car.id}, Name: ${car.brand} ${car.model}${car.year ? " " + car.year : ""}, Maker: ${car.maker}, Color: ${car.color}, Era: ${car.era}, Categories: ${car.tags.map((t: any) => t.tags).join(",")}`;
 };
+
+const query = "How many Mazda models do I own in my collection?";
 
 const loadData = async () => {
   const embedding = await openai.embeddings.create({
     model: "text-embedding-3-large",
-    input: "S4 Quattro",
+    input: query,
     encoding_format: "float",
   });
 
@@ -41,6 +43,7 @@ const loadData = async () => {
     {
       $project: {
         _id: 0,
+        id: 1,
         brand: 1,
         model: 1,
         year: 1,
@@ -69,7 +72,7 @@ const loadData = async () => {
         role: "user",
         content:
           "Answer this user query: " +
-          "What are the top 5 most similar cars to the current one?" +
+          query +
           " with the following context: " +
           search_results,
       },
