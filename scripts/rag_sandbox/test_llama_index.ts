@@ -6,6 +6,8 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 import {
   IngestionPipeline,
   MongoDBAtlasVectorSearch,
+  OpenAIEmbedding,
+  SentenceSplitter,
   VectorStoreIndex,
 } from "llamaindex";
 const filename = "cars.csv";
@@ -38,12 +40,12 @@ const cleanup = async () => {
     },
   });
   const collection = mongoClient.db("diecastfun").collection("llamatest");
-  await collection.deleteMany({ content: { $exists: true } });
+  await collection.deleteMany();
 };
 
 // eslint-disable-next-line no-unused-vars
 const loadData = async () => {
-  const writableStream = fs.createWriteStream(filename);
+  const writableStream = fs.createWriteStream(`data/${filename}`);
   const cars = await prisma.cars.findMany({
     include: {
       tags: true,
@@ -52,35 +54,53 @@ const loadData = async () => {
 
   const stringifier = stringify({ header: true, columns: columns });
   for (const car of cars) {
-    stringifier.write(car);
+    const { id, brand, model, maker, era, tags, color, year } = car;
+
+    stringifier.write({
+      id,
+      brand,
+      model,
+      maker,
+      era,
+      color,
+      year,
+      categories: tags.map((t) => t.tags).join(";"),
+    });
   }
 
-  stringifier.pipe(writableStream);
+  await stringifier.pipe(writableStream);
 
   const reader = new SimpleDirectoryReader();
   const documents = await reader.loadData("data");
 
+  console.log(documents);
+
   const pipeline = new IngestionPipeline({
     documents: documents,
     vectorStore,
+    transformations: [
+      new SentenceSplitter({ chunkSize: 1024, chunkOverlap: 20 }),
+      new OpenAIEmbedding(),
+    ],
   });
 
   await pipeline.run({ documents });
+
+  console.log("Pipeline ran!");
 };
 
 const runLlama = async () => {
   const index = VectorStoreIndex.fromVectorStore(vectorStore);
 
-  const query = (await index).asQueryEngine({ similarityTopK: 2 });
+  const query = (await index).asQueryEngine({ similarityTopK: 5 });
 
   const response = await query.query({
-    query:
-      "Can you give me 5 models similar to BMW Alpina B7 xDrive, giving me a csv list of ids, brand, model and maker",
+    query: "List 5 similar cars to the Audi S4 Quattro",
   });
 
   console.log(response);
 };
 
-//loadData();
 //cleanup();
+//loadData();
 runLlama();
