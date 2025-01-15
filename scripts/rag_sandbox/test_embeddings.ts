@@ -18,7 +18,7 @@ const formatCarAsText = (doc: any) => {
 };
 
 const query =
-  "Do I have models of Audi TT or something similar? If yes, list them all in a comprehensive way.";
+  "Give me a comma-separated list of 8 different car ids similar to datsunpickup1977 in the collection. Avoid duplicate ids in the list";
 
 const loadData = async () => {
   const embeddings = new OpenAIEmbeddings({
@@ -34,9 +34,9 @@ const loadData = async () => {
 
   const retriever = vectorStore.asRetriever(100);
   const prompt = PromptTemplate.fromTemplate(
-    `You are a car dabatase representing a collection I own. Answer the question based on the following context: {context} Question: {question}`,
+    `You are a car dabatase representing a collection I own. Answer the question based on the following list of cars: {context}. Question: {question}`,
   );
-  const model = new ChatOpenAI({});
+  const model = new ChatOpenAI({ temperature: 0.5 });
 
   const runnable = RunnableSequence.from([
     prompt,
@@ -44,12 +44,17 @@ const loadData = async () => {
     new StringOutputParser(),
   ]);
 
+  const context = (await retriever.invoke(query))
+    .map((doc) => formatCarAsText(doc))
+    .join("\n") as any;
+
+  console.log(context);
+
   const answer = await runnable.invoke({
-    context: (await retriever.invoke(query))
-      .map((doc) => formatCarAsText(doc))
-      .join("\n") as any,
+    context,
     question: query,
   });
+
   console.log(answer);
 };
 
