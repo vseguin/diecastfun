@@ -19,6 +19,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CarList from "../../components/carlist";
 import Image from "next/image";
+import * as changeCase from "change-case";
 
 type Props = {
   car: Car;
@@ -69,7 +70,9 @@ export default function CarPage({ car }: Props) {
                     {car.tags.map((t) => {
                       return (
                         <Link key={t.tags} href={`/cars?category=${t.tags}`}>
-                          <Typography>{t.tags}</Typography>
+                          <Typography>
+                            {changeCase.sentenceCase(t.tags)}
+                          </Typography>
                         </Link>
                       );
                     })}
@@ -81,7 +84,9 @@ export default function CarPage({ car }: Props) {
                   </TableCell>
                   <TableCell align="right">
                     <Link href={`/cars?era=${car.era}`}>
-                      <Typography>{car.era}</Typography>
+                      <Typography>
+                        {changeCase.sentenceCase(car.era || "Unknown")}
+                      </Typography>
                     </Link>
                   </TableCell>
                 </TableRow>
