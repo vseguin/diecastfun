@@ -17,11 +17,11 @@ tools = toolkit.get_tools()
 tools
 
 prompt_template = hub.pull("langchain-ai/sql-agent-system-prompt")
-system_message = prompt_template.format(dialect=db.dialect, top_k=100)
+system_message = prompt_template.format(dialect=db.dialect, top_k=5)
 
 agent_executor = create_react_agent(llm, tools, state_modifier=system_message)
 
-question = "Craft me an email to the CEO of the company named by the brand that has the most cars in the database"
+question = "Give me a list of top 10 brands with their respective count of cars in the database"
 
 for step in agent_executor.stream(
     {"messages": [{"role": "user", "content": question}]},
