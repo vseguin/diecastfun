@@ -18,7 +18,7 @@ const formatCarAsText = (doc: any) => {
 };
 
 const query =
-  "Give me a comma-separated list of 8 different car ids similar to datsunpickup1977 in the collection. Avoid duplicate ids in the list";
+  "Give me a comma-separated list of 8 different car ids similar to datsunpickup1977 in the collection. Avoid duplicate ids in the list.";
 
 const loadData = async () => {
   const embeddings = new OpenAIEmbeddings({
