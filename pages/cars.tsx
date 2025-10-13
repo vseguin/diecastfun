@@ -42,14 +42,37 @@ export default function CarsIndex() {
   const query = searchTerms.join(",");
 
   return (
-    <>
+    <Box>
       {loading && (
-        <Box className="flex flex-justify-center">
+        <Box className="flex flex-justify-center" sx={{ padding: "48px 0" }}>
           <CircularProgress color="inherit" />
         </Box>
       )}
+      {!loading && cars.length == 0 && !query && (
+        <>
+          <Typography
+            variant="h4"
+            sx={{ marginBottom: "24px", fontWeight: 600 }}
+          >
+            All Cars
+          </Typography>
+          <Typography variant="h6" color="text.secondary">
+            No cars found.
+          </Typography>
+        </>
+      )}
       {!loading && cars.length == 0 && query && (
-        <Typography variant="h6">No results for {query}.</Typography>
+        <>
+          <Typography
+            variant="h4"
+            sx={{ marginBottom: "24px", fontWeight: 600 }}
+          >
+            Search Results
+          </Typography>
+          <Typography variant="h6" color="text.secondary">
+            No results for &quot;{query}&quot;.
+          </Typography>
+        </>
       )}
       {!loading && cars.length > 0 && (
         <>
@@ -57,15 +80,18 @@ export default function CarsIndex() {
             className="flex flex-wrap"
             sx={{
               alignItems: "center",
-              justifyContent: query ? "space-between" : "flex-end",
+              justifyContent: "space-between",
+              marginBottom: "24px",
             }}
           >
-            {query && <Typography variant="h4">Results for {query}</Typography>}
+            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              {query ? `Results for "${query}"` : "All Cars"}
+            </Typography>
             <Pagination total={total} page={page} />
           </Box>
           <CarList cars={cars} />
         </>
       )}
-    </>
+    </Box>
   );
 }

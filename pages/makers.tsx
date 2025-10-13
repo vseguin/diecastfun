@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { getGroupedByCars } from "../utils/api";
 import GridList, { GridItem } from "../components/gridlist";
 import { pluralize } from "../utils/typography";
+import { Box, Typography } from "@mui/material";
 
 type Maker = Prisma.makersGetPayload<{}> &
   GridItem & {
@@ -15,14 +16,18 @@ type Props = {
 
 export default function MakersIndex({ makers }: Props) {
   return (
-    <div>
+    <Box>
+      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+        Makers
+      </Typography>
       <GridList
         firstTitleFormatter={(m) => `${m.name}`}
         items={makers}
         linkFormatter={(m) => `/cars?maker=${m.name}`}
         secondTitleFormatter={(m) => `${pluralize(m.count, "car")}`}
+        imageBackgroundColor="#ffffff"
       />
-    </div>
+    </Box>
   );
 }
 

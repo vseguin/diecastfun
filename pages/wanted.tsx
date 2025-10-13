@@ -5,9 +5,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Paper,
+  Typography,
+  Box,
 } from "@mui/material";
 import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
+import { borders } from "../utils/theme";
 
 type WantedCar = Prisma.wanted_carsGetPayload<{}>;
 
@@ -17,30 +21,56 @@ type Props = {
 
 export default function WantedList({ cars }: Props) {
   return (
-    <TableContainer>
-      <Table sx={{ maxWidth: 800 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ fontWeight: "bold" }}>Maker</TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} align="right">
-              Brand
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold" }} align="right">
-              Model
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {cars.map((car) => (
-            <TableRow key={car.id}>
-              <TableCell>{car.maker}</TableCell>
-              <TableCell align="right">{car.brand}</TableCell>
-              <TableCell align="right">{car.model}</TableCell>
+    <Box>
+      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+        Wanted List
+      </Typography>
+      <TableContainer
+        component={Paper}
+        sx={{
+          border: borders.default,
+          borderRadius: "12px",
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow
+              sx={{
+                "& th": {
+                  fontWeight: 600,
+                  fontSize: "0.875rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                },
+              }}
+            >
+              <TableCell>Maker</TableCell>
+              <TableCell>Brand</TableCell>
+              <TableCell>Model</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {cars.map((car) => (
+              <TableRow
+                key={car.id}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  },
+                  "&:last-child td": {
+                    borderBottom: 0,
+                  },
+                }}
+              >
+                <TableCell>{car.maker}</TableCell>
+                <TableCell>{car.brand}</TableCell>
+                <TableCell>{car.model}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
 

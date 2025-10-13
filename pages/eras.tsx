@@ -3,6 +3,7 @@ import GridList, { GridItem } from "../components/gridlist";
 import { getGroupedByCars } from "../utils/api";
 import { pluralize } from "../utils/typography";
 import * as changeCase from "change-case";
+import { Box, Typography } from "@mui/material";
 
 type Era = GridItem & {
   count: number;
@@ -14,14 +15,18 @@ type Props = {
 
 export default function ErasIndex({ eras }: Props) {
   return (
-    <div>
+    <Box>
+      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+        Eras
+      </Typography>
       <GridList
         firstTitleFormatter={(e) => `${changeCase.sentenceCase(e.id)}`}
         items={eras}
         linkFormatter={(e) => `/cars?era=${e.id}`}
         secondTitleFormatter={(c) => `${pluralize(c.count, "car")}`}
+        imageBackgroundColor="#ffffff"
       />
-    </div>
+    </Box>
   );
 }
 

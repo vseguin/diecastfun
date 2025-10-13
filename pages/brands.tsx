@@ -2,7 +2,14 @@ import prisma from "../lib/prisma";
 import { Prisma } from "@prisma/client";
 import { getGroupedByCars } from "../utils/api";
 import { GetServerSidePropsContext } from "next";
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import * as changeCase from "change-case";
@@ -45,50 +52,63 @@ export default function BrandsIndex({ brands, countries }: Props) {
 
   return (
     <Box>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-        <InputLabel id="country-label">Country</InputLabel>
-        <Select
-          labelId="country-label"
-          value={country}
-          label="Country"
-          onChange={(e) => onCountryChange(e.target.value)}
-        >
-          <MenuItem key={defaultValue} value={defaultValue}>
-            {defaultValue}
-          </MenuItem>
-          {countries.map((c) => {
-            const displayValue = changeCase.capitalCase(c);
-            const countryCode = getCountryCode(c);
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "24px",
+        }}
+      >
+        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+          Brands
+        </Typography>
+        <FormControl sx={{ minWidth: 180 }} size="small">
+          <InputLabel id="country-label">Country</InputLabel>
+          <Select
+            labelId="country-label"
+            value={country}
+            label="Country"
+            onChange={(e) => onCountryChange(e.target.value)}
+          >
+            <MenuItem key={defaultValue} value={defaultValue}>
+              {defaultValue}
+            </MenuItem>
+            {countries.map((c) => {
+              const displayValue = changeCase.capitalCase(c);
+              const countryCode = getCountryCode(c);
 
-            return (
-              <MenuItem key={c.toString()} value={c}>
-                {
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box>{displayValue}</Box>&nbsp;
-                    <Box className={`fi fi-${countryCode}`}></Box>
-                  </Box>
-                }
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
+              return (
+                <MenuItem key={c.toString()} value={c}>
+                  {
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box>{displayValue}</Box>&nbsp;
+                      <Box className={`fi fi-${countryCode}`}></Box>
+                    </Box>
+                  }
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </Box>
       <GridList
         firstTitleFormatter={(b) => `${b.id}`}
         items={brands}
         linkFormatter={(b) => `/cars?brand=${b.id}`}
         secondTitleFormatter={(b) => (
-          <Box>
+          <>
             {`${pluralize(b.count, "car")}`} -{" "}
-            <Box className={`fi fi-${getCountryCode(b.country)}`}></Box>
-          </Box>
+            <span className={`fi fi-${getCountryCode(b.country)}`}></span>
+          </>
         )}
+        imageBackgroundColor="#ffffff"
       />
     </Box>
   );

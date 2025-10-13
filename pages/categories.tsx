@@ -2,6 +2,7 @@ import prisma from "../lib/prisma";
 import GridList, { GridItem } from "../components/gridlist";
 import { pluralize } from "../utils/typography";
 import * as changeCase from "change-case";
+import { Box, Typography } from "@mui/material";
 
 type Category = GridItem & {
   count: number;
@@ -13,14 +14,17 @@ type Props = {
 
 export default function CategoriesIndex({ categories }: Props) {
   return (
-    <div>
+    <Box>
+      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+        Categories
+      </Typography>
       <GridList
         firstTitleFormatter={(c) => `${changeCase.sentenceCase(c.id)}`}
         items={categories}
         linkFormatter={(c) => `/cars?category=${c.id}`}
         secondTitleFormatter={(c) => `${pluralize(c.count, "car")}`}
       />
-    </div>
+    </Box>
   );
 }
 
