@@ -4,7 +4,6 @@ type Options = {
 };
 
 export default function cloudfrontLoader({ src, width }: Options) {
-  debugger;
   const url = new URL(`${process.env.STORAGE_URL}${src}`);
   url.searchParams.set("format", "auto");
   url.searchParams.set("width", width.toString());
