@@ -117,7 +117,7 @@ export default function Navbar() {
                 ),
               }}
               sx={{
-                minWidth: "250px",
+                width: { xs: "120px", sm: "200px", md: "250px" },
                 "& .MuiOutlinedInput-root": {
                   paddingRight: "4px",
                 },
