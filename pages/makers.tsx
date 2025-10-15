@@ -17,7 +17,7 @@ type Props = {
 export default function MakersIndex({ makers }: Props) {
   return (
     <Box>
-      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+      <Typography variant="h4" className="page-heading">
         Makers
       </Typography>
       <GridList

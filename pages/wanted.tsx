@@ -22,7 +22,7 @@ type Props = {
 export default function WantedList({ cars }: Props) {
   return (
     <Box>
-      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+      <Typography variant="h4" className="page-heading">
         Wanted List
       </Typography>
       <TableContainer
@@ -53,6 +53,7 @@ export default function WantedList({ cars }: Props) {
             {cars.map((car) => (
               <TableRow
                 key={car.id}
+                className="transition-smooth"
                 sx={{
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.03)",

@@ -55,3 +55,133 @@ a:hover {
         padding: 20px;
     }
 }
+
+/* Layout Utilities */
+.flex-center {
+    display: flex;
+    align-items: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-column-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Spacing Utilities */
+.gap-2 {
+    gap: 16px;
+}
+
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.mb-48 {
+    margin-bottom: 48px;
+}
+
+/* Typography Utilities */
+.page-heading {
+    margin-bottom: 24px;
+    font-weight: 600;
+}
+
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.font-weight-700 {
+    font-weight: 700;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Gradient Text Effect */
+.gradient-text {
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Transition Utilities */
+.transition-smooth {
+    transition: all 0.2s ease-in-out;
+}
+
+.transition-default {
+    transition: all 0.3s ease;
+}
+
+/* Container Utilities */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 24px;
+    text-align: center;
+}
+
+.empty-state-compact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+}
+
+/* Interactive Elements */
+.interactive-card {
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Image Utilities */
+.responsive-image {
+    width: 100%;
+    height: auto;
+}
+
+/* Border Utilities */
+.border-radius-8 {
+    border-radius: 8px;
+}
+
+.border-radius-12 {
+    border-radius: 12px;
+}
+
+/* Icon Utilities */
+.icon-large {
+    font-size: 2rem;
+}
+
+.icon-medium {
+    font-size: 1.2rem;
+}
+
+.icon-small {
+    font-size: 1rem;
+}

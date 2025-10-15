@@ -16,7 +16,7 @@ type Props = {
 export default function ErasIndex({ eras }: Props) {
   return (
     <Box>
-      <Typography variant="h4" sx={{ marginBottom: "24px", fontWeight: 600 }}>
+      <Typography variant="h4" className="page-heading">
         Eras
       </Typography>
       <GridList

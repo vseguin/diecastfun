@@ -123,7 +123,7 @@ export default function CarPage({ car }: Props) {
                 loading="lazy"
                 width={0}
                 height={0}
-                style={{ width: "100%", height: "auto" }}
+                className="responsive-image"
               />
             </ImageListItem>
             <ImageListItem key={car.images[1]} cols={1} rows={1}>
@@ -133,7 +133,7 @@ export default function CarPage({ car }: Props) {
                 loading="lazy"
                 width={0}
                 height={0}
-                style={{ width: "100%", height: "auto" }}
+                className="responsive-image"
               />
             </ImageListItem>
             <ImageListItem key={car.images[2]} cols={1} rows={1}>
@@ -143,7 +143,7 @@ export default function CarPage({ car }: Props) {
                 loading="lazy"
                 width={0}
                 height={0}
-                style={{ width: "100%", height: "auto" }}
+                className="responsive-image"
               />
             </ImageListItem>
           </ImageList>

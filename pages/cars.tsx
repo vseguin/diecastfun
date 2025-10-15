@@ -51,10 +51,7 @@ export default function CarsIndex() {
       )}
       {!loading && cars.length == 0 && !query && (
         <>
-          <Typography
-            variant="h4"
-            sx={{ marginBottom: "24px", fontWeight: 600 }}
-          >
+          <Typography variant="h4" className="page-heading">
             All Cars
           </Typography>
           <Typography variant="h6" color="text.secondary">
@@ -64,26 +61,14 @@ export default function CarsIndex() {
       )}
       {!loading && cars.length == 0 && query && (
         <>
-          <Typography
-            variant="h4"
-            sx={{ marginBottom: "24px", fontWeight: 600 }}
-          >
+          <Typography variant="h4" className="page-heading">
             Search Results
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "64px 24px",
-              textAlign: "center",
-            }}
-          >
+          <Box className="empty-state">
             <Box
+              className="mb-24"
               sx={{
                 position: "relative",
-                marginBottom: "24px",
                 animation: "shake 3s ease-in-out infinite",
                 "@keyframes shake": {
                   "0%, 100%": { transform: "rotate(0deg)" },
@@ -102,8 +87,8 @@ export default function CarsIndex() {
             </Box>
             <Typography
               variant="h5"
+              className="font-weight-600"
               sx={{
-                fontWeight: 600,
                 marginBottom: "12px",
                 color: "text.primary",
               }}
@@ -130,15 +115,8 @@ export default function CarsIndex() {
       )}
       {!loading && cars.length > 0 && (
         <>
-          <Box
-            className="flex flex-wrap"
-            sx={{
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "24px",
-            }}
-          >
-            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+          <Box className="flex flex-wrap flex-between mb-24">
+            <Typography variant="h4" className="font-weight-600">
               {query ? `Results for "${query}"` : "All Cars"}
             </Typography>
             <Pagination total={total} page={page} />

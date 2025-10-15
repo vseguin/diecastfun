@@ -52,15 +52,8 @@ export default function BrandsIndex({ brands, countries }: Props) {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-        }}
-      >
-        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+      <Box className="flex-between mb-24">
+        <Typography variant="h4" className="font-weight-600">
           Brands
         </Typography>
         <FormControl sx={{ minWidth: 180 }} size="small">
@@ -81,13 +74,7 @@ export default function BrandsIndex({ brands, countries }: Props) {
               return (
                 <MenuItem key={c.toString()} value={c}>
                   {
-                    <Box
-                      sx={{
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    <Box className="flex-between" sx={{ width: "100%" }}>
                       <Box>{displayValue}</Box>&nbsp;
                       <Box className={`fi fi-${countryCode}`}></Box>
                     </Box>

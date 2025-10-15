@@ -23,37 +23,24 @@ export default function Home({
   return (
     <>
       <main>
-        <Box sx={{ marginBottom: "48px" }}>
+        <Box className="mb-48">
           <Card
             sx={{
               background: gradients.subtle,
               border: borders.subtle,
               padding: "32px",
-              textAlign: "center",
             }}
+            className="text-center"
           >
             <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2,
-                flexWrap: "wrap",
-              }}
+              className="flex-center"
+              sx={{ justifyContent: "center", gap: 2, flexWrap: "wrap" }}
             >
               <DirectionsCar
+                className="icon-large"
                 sx={{ fontSize: "2.5rem", color: "primary.main" }}
               />
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: 700,
-                  background: gradients.primary,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
+              <Typography variant="h3" className="gradient-text">
                 {totalCount.toString()} Cars
               </Typography>
             </Box>
@@ -66,43 +53,30 @@ export default function Home({
           </Card>
         </Box>
 
-        <Box sx={{ marginBottom: "48px" }}>
-          <Typography
-            variant="h4"
-            sx={{ marginBottom: "24px", fontWeight: 600 }}
-          >
+        <Box className="mb-48">
+          <Typography variant="h4" className="page-heading">
             Latest Additions
           </Typography>
           <CarList cars={latestAdditions} />
         </Box>
 
-        <Box sx={{ marginBottom: "48px" }}>
-          <Typography
-            variant="h4"
-            sx={{ marginBottom: "24px", fontWeight: 600 }}
-          >
+        <Box className="mb-48">
+          <Typography variant="h4" className="page-heading">
             Featured Car
           </Typography>
           <CarList cars={[featuredCar]} />
         </Box>
 
         <Box>
-          <Typography
-            variant="h4"
-            sx={{ marginBottom: "24px", fontWeight: 600 }}
-          >
+          <Typography variant="h4" className="page-heading">
             Browse Collections
           </Typography>
           <Grid container spacing={3} size={12}>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <Link
-                href="/cars?customized=true"
-                style={{ textDecoration: "none" }}
-              >
+              <Link href="/cars?customized=true">
                 <Card
+                  className="interactive-card"
                   sx={{
-                    padding: "24px",
-                    cursor: "pointer",
                     background: gradients.subtle,
                     "&:hover": {
                       background: gradients.subtleHover,
@@ -110,16 +84,13 @@ export default function Home({
                     },
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 2,
-                    }}
-                  >
-                    <Build sx={{ fontSize: "2rem", color: "primary.main" }} />
+                  <Box className="flex-center gap-2">
+                    <Build
+                      className="icon-large"
+                      sx={{ color: "primary.main" }}
+                    />
                     <Box>
-                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      <Typography variant="h6" className="font-weight-600">
                         Custom Cars
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -131,14 +102,10 @@ export default function Home({
               </Link>
             </Grid>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <Link
-                href="/cars?restored=true"
-                style={{ textDecoration: "none" }}
-              >
+              <Link href="/cars?restored=true">
                 <Card
+                  className="interactive-card"
                   sx={{
-                    padding: "24px",
-                    cursor: "pointer",
                     background: gradients.subtleReverse,
                     "&:hover": {
                       background: gradients.subtleHoverReverse,
@@ -146,18 +113,13 @@ export default function Home({
                     },
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 2,
-                    }}
-                  >
+                  <Box className="flex-center gap-2">
                     <Restore
-                      sx={{ fontSize: "2rem", color: "secondary.main" }}
+                      className="icon-large"
+                      sx={{ color: "secondary.main" }}
                     />
                     <Box>
-                      <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      <Typography variant="h6" className="font-weight-600">
                         Restorations
                       </Typography>
                       <Typography variant="body2" color="text.secondary">

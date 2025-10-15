@@ -15,29 +15,26 @@ export default function Footer() {
       }}
     >
       <Box
+        className="flex-between gap-2"
         sx={{
           maxWidth: "1400px",
           margin: "0 auto",
-          display: "flex",
           flexDirection: { xs: "column", sm: "row" },
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 2,
         }}
       >
         <Typography
           component="div"
+          className="flex-center"
           sx={{
-            display: "flex",
-            alignItems: "center",
             gap: 1,
             color: "text.secondary",
           }}
         >
-          Built with <Favorite sx={{ fontSize: "1rem", color: "#ef4444" }} />{" "}
-          using Next.js
+          Built with{" "}
+          <Favorite className="icon-small" sx={{ color: "#ef4444" }} /> using
+          Next.js
         </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Box className="flex-center" sx={{ gap: 1 }}>
           <Typography component="div" sx={{ color: "text.secondary" }}>
             Find me on
           </Typography>
@@ -45,14 +42,11 @@ export default function Footer() {
             href="https://www.instagram.com/164diecastfun/"
             target="_blank"
             rel="noreferrer"
+            className="flex-center border-radius-8 transition-smooth"
             style={{
-              display: "flex",
-              alignItems: "center",
               gap: "6px",
               padding: "6px 12px",
-              borderRadius: "8px",
               backgroundColor: overlays.light,
-              transition: "all 0.2s ease-in-out",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = overlays.medium;
@@ -61,7 +55,7 @@ export default function Footer() {
               e.currentTarget.style.backgroundColor = overlays.light;
             }}
           >
-            <Instagram sx={{ fontSize: "1.2rem" }} />
+            <Instagram className="icon-medium" />
             <span>Instagram</span>
           </a>
         </Box>

@@ -8,23 +8,16 @@ import HomeIcon from "@mui/icons-material/Home";
 export default function NotFound() {
   return (
     <Box
+      className="empty-state-compact"
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
         minHeight: "60vh",
-        padding: "48px 24px",
-        textAlign: "center",
       }}
     >
       <Box
+        className="flex-center gap-2"
         sx={{
           position: "relative",
           marginBottom: "32px",
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
         }}
       >
         <Typography
@@ -73,8 +66,8 @@ export default function NotFound() {
 
       <Typography
         variant="h4"
+        className="font-weight-700"
         sx={{
-          fontWeight: 700,
           marginBottom: "16px",
           color: "text.primary",
         }}
@@ -110,12 +103,12 @@ export default function NotFound() {
           variant="contained"
           size="large"
           startIcon={<HomeIcon />}
+          className="font-weight-600"
           sx={{
             textTransform: "none",
             paddingX: "32px",
             paddingY: "12px",
             fontSize: "16px",
-            fontWeight: 600,
           }}
         >
           Back to Home

@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search } from "@mui/icons-material";
 import React from "react";
-import { gradients, overlays } from "../utils/theme";
+import { overlays } from "../utils/theme";
 
 export default function Navbar() {
   const router = useRouter();
@@ -31,12 +31,11 @@ export default function Navbar() {
     return (
       <Box
         key={item.title}
+        className="border-radius-8 transition-smooth"
         sx={{
           margin: "0 4px",
           padding: "8px 16px",
-          borderRadius: "8px",
           backgroundColor: isActive ? overlays.light : "transparent",
-          transition: "all 0.2s ease-in-out",
           "&:hover": {
             backgroundColor: overlays.lighter,
           },
@@ -69,22 +68,18 @@ export default function Navbar() {
           <Box className="flex flex-align-center flex-grow">
             <Typography
               variant="h6"
+              className="gradient-text"
               sx={{
-                fontWeight: 700,
                 fontSize: "1.25rem",
                 letterSpacing: "-0.02em",
-                background: gradients.primary,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
               }}
             >
               <Link href="/">1/64 DIECAST FUN</Link>
             </Typography>
             <Box
+              className="flex-center"
               sx={{
                 display: { xs: "none", md: "flex" },
-                alignItems: "center",
               }}
             >
               <Divider
