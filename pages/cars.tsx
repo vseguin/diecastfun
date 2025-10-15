@@ -8,6 +8,7 @@ import CarList from "../components/carlist";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import Pagination from "../components/pagination";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 
 export default function CarsIndex() {
   const [loading, setLoading] = useState(true);
@@ -69,9 +70,62 @@ export default function CarsIndex() {
           >
             Search Results
           </Typography>
-          <Typography variant="h6" color="text.secondary">
-            No results for &quot;{query}&quot;.
-          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "64px 24px",
+              textAlign: "center",
+            }}
+          >
+            <Box
+              sx={{
+                position: "relative",
+                marginBottom: "24px",
+                animation: "shake 3s ease-in-out infinite",
+                "@keyframes shake": {
+                  "0%, 100%": { transform: "rotate(0deg)" },
+                  "25%": { transform: "rotate(-10deg)" },
+                  "75%": { transform: "rotate(10deg)" },
+                },
+              }}
+            >
+              <SearchOffIcon
+                sx={{
+                  fontSize: 120,
+                  color: "text.disabled",
+                  opacity: 0.3,
+                }}
+              />
+            </Box>
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 600,
+                marginBottom: "12px",
+                color: "text.primary",
+              }}
+            >
+              No Matches Found
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ maxWidth: 400, marginBottom: "8px" }}
+            >
+              We couldn&apos;t find any diecast cars matching{" "}
+              <strong>&quot;{query}&quot;</strong>.
+            </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ maxWidth: 400 }}
+            >
+              Try adjusting your search terms or browse all cars instead.
+            </Typography>
+          </Box>
         </>
       )}
       {!loading && cars.length > 0 && (
