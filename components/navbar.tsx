@@ -6,17 +6,23 @@ import {
   Divider,
   TextField,
   IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Search } from "@mui/icons-material";
+import { Search, Menu as MenuIcon, Close } from "@mui/icons-material";
 import React from "react";
 import { overlays } from "../utils/theme";
 
 export default function Navbar() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { href: "/makers", title: "Makers" },
@@ -64,7 +70,20 @@ export default function Navbar() {
   return (
     <Box>
       <AppBar position="static" sx={{ boxShadow: "none" }}>
-        <Toolbar sx={{ padding: "8px 32px !important", minHeight: "70px" }}>
+        <Toolbar sx={{ padding: "8px 32px", minHeight: "70px" }}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => setMobileMenuOpen(true)}
+            sx={{
+              display: { xs: "flex", md: "none" },
+              marginRight: 2,
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+
           <Box className="flex flex-align-center flex-grow">
             <Typography
               variant="h6"
@@ -72,14 +91,16 @@ export default function Navbar() {
               sx={{
                 fontSize: "1.25rem",
                 letterSpacing: "-0.02em",
+                whiteSpace: "nowrap",
               }}
             >
               <Link href="/">1/64 DIECAST FUN</Link>
             </Typography>
+
             <Box
-              className="flex-center"
               sx={{
-                display: { xs: "none", md: "flex" },
+                display: { xs: "none !important", md: "flex !important" },
+                alignItems: "center",
               }}
             >
               <Divider
@@ -90,7 +111,13 @@ export default function Navbar() {
               {navElements}
             </Box>
           </Box>
-          <form action="#" onSubmit={onSubmit} className="flex">
+
+          <Box
+            component="form"
+            action="#"
+            onSubmit={onSubmit}
+            sx={{ display: { xs: "none", md: "flex" } }}
+          >
             <TextField
               onInput={(event) => {
                 setSearchTerm((event.target as HTMLInputElement).value);
@@ -112,15 +139,108 @@ export default function Navbar() {
                 ),
               }}
               sx={{
-                width: { xs: "120px", sm: "200px", md: "250px" },
+                width: "250px",
+                marginLeft: "12px",
                 "& .MuiOutlinedInput-root": {
                   paddingRight: "4px",
                 },
               }}
             />
-          </form>
+          </Box>
         </Toolbar>
       </AppBar>
+
+      <Drawer
+        anchor="left"
+        open={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        sx={{
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        <Box sx={{ width: 280, padding: "16px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 2,
+            }}
+          >
+            <Typography variant="h6" className="gradient-text">
+              Menu
+            </Typography>
+            <IconButton onClick={() => setMobileMenuOpen(false)}>
+              <Close />
+            </IconButton>
+          </Box>
+
+          <Box
+            component="form"
+            action="#"
+            onSubmit={onSubmit}
+            sx={{ marginBottom: 2 }}
+          >
+            <TextField
+              onInput={(event) => {
+                setSearchTerm((event.target as HTMLInputElement).value);
+              }}
+              variant="outlined"
+              placeholder="Search cars..."
+              size="small"
+              fullWidth
+              value={searchTerm}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    type="submit"
+                    aria-label="search"
+                    size="small"
+                    sx={{ color: "primary.main" }}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Search />
+                  </IconButton>
+                ),
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  paddingRight: "4px",
+                },
+              }}
+            />
+          </Box>
+
+          <Divider sx={{ marginBottom: 1 }} />
+
+          <List>
+            {navItems.map((item) => {
+              const isActive = router.pathname === item.href;
+              return (
+                <ListItem key={item.title} disablePadding>
+                  <ListItemButton
+                    component={Link}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    sx={{
+                      borderRadius: "8px",
+                      marginBottom: "4px",
+                      backgroundColor: isActive
+                        ? overlays.light
+                        : "transparent",
+                      "&:hover": {
+                        backgroundColor: overlays.lighter,
+                      },
+                    }}
+                  >
+                    <ListItemText primary={item.title} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Box>
+      </Drawer>
     </Box>
   );
 }
