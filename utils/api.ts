@@ -25,13 +25,14 @@ export const getGroupedByCars = async (
 };
 
 export const mapCar = (car: Prisma.carsGetPayload<{}>) => {
+  const encodedId = encodeURIComponent(car.id);
   return {
     images: [
-      `/images/cars/${car.id}-1.jpg`,
-      `/images/cars/${car.id}-2.jpg`,
-      `/images/cars/${car.id}-3.jpg`,
+      `/images/cars/${encodedId}-1.jpg`,
+      `/images/cars/${encodedId}-2.jpg`,
+      `/images/cars/${encodedId}-3.jpg`,
     ],
-    thumbnail: `${process.env.STORAGE_URL}/images/cars-small/${car.id}-1.jpg`,
+    thumbnail: `${process.env.STORAGE_URL}/images/cars-small/${encodedId}-1.jpg`,
     ...car,
   };
 };
